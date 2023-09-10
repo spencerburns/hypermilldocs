@@ -1,0 +1,3257 @@
+.. default-domain:: py
+.. highlight:: python
+.. module:: om.cam.core
+    :platform: Windows 7 (x64), Windows 10 (x64), Windows 11 (x64)
+    :synopsis: Implementation of OPEN MIND \ *hyper*\ MILL API bridge commands.
+
+.. import-dll:: _hmCoreX64
+
+========================
+Module ``om.cam.core``
+========================
+   
+How to start
+============
+
+``om.cam.core`` contains is the Python extension to the known C++ bridge API of OPEN MIND \ *hyper*\ MILL. All other libraries of the hmPython project depend
+on these functions and classes.
+
+Python is delivered as an embedded system together with OPEN MIND \ *hyper*\ MILL, you do not need to install a separate Python installation on your workstation.
+Indeed, if you have another Python installation running, we cannot guarantee, that hmPython will be running.
+
+A full working example is here:
+
+.. literalinclude:: basic_example.py
+    :caption: Basic example how to include om.cam.core
+    :name: howto_example
+
+
+Functions
+=========
+
+.. function:: IsHyperMillRunning() -> bool
+
+    Tests if the \ *hyper*\ MILL application is available.
+
+    :return: Returns True, if the module is started within the \ *hyper*\ MILL application, otherwise False.
+    :rtype: bool
+
+    Example: :ref:`howto_example`
+
+
+.. function:: CreatePyApplication() -> PyApplication
+
+    .. pybind-reftype:: pybind11::return_value_policy::reference
+
+    Creates the application instance that provides all application related methods. Call this method first.
+
+    :return: Returns the application instance of \ *hyper*\ MILL Python. Only available, when :func:`IsHyperMillRunning` returns True.
+    :rtype: PyApplication
+
+    Example: :ref:`howto_example`
+
+
+Enumerations
+============
+
+.. class:: PyAlertSeverity(enum.IntEnum)
+
+    Enumeration class for the severity properties of alert messages and message boxes. Used in :meth:`PyApplication.ShowMessage` and :meth:`PyApplication.WriteMessage`.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "NoSeverity", "The severity is not set"
+        "Message", "The content is just informational"
+        "Question", "The content is a question"
+        "Warning", "The content is a warning"
+        "Error", "The content is an error message"
+        "Severe", "The content describes a severe error"
+
+
+.. class:: PyAlertButton(enum.IntEnum)
+
+    Enumeration class for buttons in an alert message box. Used in :meth:`PyApplication.ShowMessage`.
+
+    .. csv-table:: 
+        :header: "Value", "Description"
+        
+        "NoButton", "No button"
+        "Yes", "Inserts a **Yes** button"
+        "No", "Inserts a **No** button"
+        "Cancel", "Inserts a **Cancel** button"
+        "Retry", "Inserts a **Retry** button"
+        "Ok", "Inserts an **Ok** button"
+        "Ignore", "Inserts an **Ignore** button"
+        "CANCELRetryIgnore", "Buttons Cancel, Retry and Ignore: Cancel is focussed"
+        "CancelRETRYIgnore", "Buttons Cancel, Retry and Ignore: Retry is focussed"
+        "CancelRetryIGNORE", "Buttons Cancel, Retry and Ignore: Ignore is focussed"
+        "OKCancel", "Buttons OK and Cancel: OK is focussed"
+        "OkCANCEL", "Buttons OK and Cancel: Cancel is focussed"
+
+        "RETRYCancel", "Buttons Retry and Cancel: Retry is focussed"
+        "RetryCANCEL", "Buttons Retry and Cancel: Cancel is focussed"
+        "YESNo", "Buttons Yes and No: Yes is focussed"
+        "YesNO", "Buttons Yes and No: No is focussed"
+        "YESNoCancel", "Buttons Yes, No and Cancel: Yes is focussed"
+        "YesNOCancel", "Buttons Yes, No and Cancel: No is focussed"
+        "YesNoCANCEL", "Buttons Yes, No and Cancel: Cancel is focussed"
+
+.. class:: PyConfigIO(enum.IntEnum)
+
+    Enumeration class for \ *hyper*\ MILL get/set transactions.
+
+    .. csv-table:: 
+        :header: "Value", "Description"
+
+        "WriteDefaults", "CFGWRITE_DEFAULTS"
+        "WriteEdit", "CFGWRITE_EDIT"
+        "WriteCycleExec", "CFGWRITE_CYCLEEXEC"
+        "WriteNightShift", "CFGWRITE_NIGHTSHIFT"
+        "WriteExport", "CFGWRITE_EXPORT"
+        "WriteSave", "CFGWRITE_SAVE"
+
+        "ReadDefaults", "CFGREAD_DEFAULTS"
+        "ReadEdit", "CFGREAD_EDIT"
+        "ReadImport", "CFGREAD_IMPORT"
+        "ReadSave", "CFGREAD_SAVE"
+
+
+.. class:: PyDictHint(enum.IntEnum)
+
+    This enumeration holds values for the creation of an dictionary of collection items. Used in :meth:`PyCollection.ToDict`
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Name", "Use the name of the item as key"
+        "UUID", "Use the UUID of the item as key"
+        "Default", "Set to ``PyDictHint.Name``"
+
+
+.. class:: PyErrorStatus(enum.IntEnum)
+
+    This enumeration holds values for the error status of a \ *hyper*\ MILL operation. Anything else than ``PyErrorStatus::Ok`` is an error and need to be handled.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Ok", "Ok"
+        "OutOfMemory", "OutOfMemory"
+        "InternalError", "InternalError"
+        "NotImplemented", "NotImplemented"
+        "NotImplementedYet", "NotImplementedYet"
+        "CadError", "CadError"
+        "NotInitialized", "NotInitialized"
+        "NotExisting", "NotExisting"
+        "NotSupported", "NotSupported"
+        "ParameterError", "ParameterError"
+        "BufferSize", "BufferSize"
+        "CanceledByUser", "CanceledByUser"
+        "IncompatibleFileVersion", "IncompatibleFileVersion"
+        "User", "User"
+
+
+.. class:: PySearchHint(enum.IntEnum)
+
+    This enumeration sets the way, how items are searched. Used in :meth:`PyCollection.Find`
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Name", "Search item only by name"    
+        "NamePreferred", "Search item first by name, then by UUID"
+        "UUID", "Search item only by UUID"
+        "UUIDPreferred", "Search item first by UUID, then by name"
+        "Default", "Set to ``PySearchHint.Name``"
+
+
+.. class:: PyValueType(enum.IntEnum)
+
+    Returns if a user variable is number, a string or any other (incompatible) type.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Double", "The value is of numeric type"
+        "String", "The value is a string"
+        "Incompatible", "The value is not compatible"
+
+
+.. class:: PyTransformationType(enum.IntEnum)
+
+    This enumeration describes the type of the transformation.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Mirror", "Mirror transformation"
+        "LinearPattern", "Linear pattern transformation"
+        "CircularPattern", "Circular pattern"
+        "GeneralPattern", "General pattern"
+
+
+.. class:: PyJoblistOptimization(enum.IntEnum)
+
+    Selects the optimization type for job lists.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Off", "No optimization"
+        "OptimizeWithGrouping", "Optimize and group jobs"
+        "OptimizeWithoutGrouping", "Just optimize"
+
+.. class:: PyJoblistOptWithToolSorting(enum.IntEnum)
+
+    Selects a tool sorting after optimization
+
+        .. csv-table::
+            :header: "Value", "Description"
+    
+            "Off", "Jobs are not sorted by tool size"
+            "DescendingToolDiam", "Jobs are sorted by descending tool diameter"
+            "AscendingToolDiam", "Jobs are sorted by ascending tool diameter"
+
+
+.. class:: PyJoblistOptWithCompoundJobs(enum.IntEnum)
+
+    Select, if jobs are moved to compound jobs after optimization
+
+        .. csv-table::
+            :header: "Value", "Description"
+    
+            "Off", "Jobs are not moved to compound jobs"
+            "CompoundJobsSameTool", "Jobs are moved to compound jobs with same tool size"
+            "CompoundJobsSameToolSize", "DEPRECATED: Use CompoundJobsSameTool instead"
+            "CompoundJobsSameProcessStep", "Jobs are moved to compound jobs with the same process step"
+
+.. class:: PyGenerateHMReportOptions(enum.IntFlag)
+    
+    Flags to modify the behaviour of PyJoblistSet.GenerateHMReport.
+
+        .. csv-table::
+            :header: "Value", "Description"
+
+            "OverrideFolder", "Override already existing folder. If not given and the folder exists the function will fail."
+            "StopOnOutdatedJobs", "Stop report generation if any of the given jobs is not up-to-date."
+            "ContinueOnOutdatedJobs", "Continue report generation even if jobs are not up-to-date."
+            "AskContinueOnOutdatedJobs", "Asks the user whether to continue report generation in case outdated jobs are encountered."
+            "OutdatedJobStrategyMask", "Mask to extract outdated job strategy."
+            "StopOnInvalidJobs", "Stop report generation if any of the given jobs is invalid."
+            "ContinueOnInvalidJobs", "Continue report generation even if any of the given jobs is invalid."
+            "AskContinueOnInvalidJobs", "Asks the user whether to continue report generation in case invalid jobs are encountered."
+            "InvalidJobStrategyMask", "Mask to extract invalid job strategy."
+
+    An example how to set and reset bits with enum.IntFlag can be found here:
+
+    .. literalinclude:: enum_operations.py
+        :caption: Some enum operations.
+        :name: enum_operations
+
+
+.. class:: PyJoblistStatus(enum.IntEnum)
+
+    Enumeration for the joblist status.
+    
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Unknown", "Unknown value. (-1)"
+        "JoblistOK", "The joblist is OK. (1)"
+        "JoblistWithErrors", "The joblist contains errors. (2)"
+        "JoblistWithWarnings", "The joblist contains warnings. (3)"
+
+.. class:: PyPOFStatus(enum.IntEnum)
+
+    Enumeration for the POF status.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "IsUpToDate", "POF is Up-to-date (0)"
+        "Unknown", "POF is unknown (1)"
+        "ShouldBeCalculated", "POF should be calculated (2)"
+        "NeedsCalculation", "POF needs calculation (3)"
+        "CurrentlyCalculating", "POF is being calculated (4)"
+
+.. class:: PyJobStatus(enum.IntEnum)
+
+    Enumeration for the job status.
+    
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Unknown", "Unknown value. (-1)"
+        "JobIsUpToDate", "Job is up-to-date. (1)"
+        "JobWithErrors", "The job contains errors. (2)"
+        "JobWithWarnings", "The job contains warnings. (3)"
+
+
+.. class:: PyClearDocumentOptions(enum.IntEnum):
+
+    Enumeration for clear document options.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "RemoveTools", "Remove all tools from the document. (0x01)"
+        "RemoveFrames", "Remove all frames from the document. (0x02)"
+        "RemoveModels", "Remove all models from the document. (0x04)"
+        "RemoveTransformations", "Remove all transformations from the document. (0x08)"
+        "RemoveFeatures", "Remove all features from the document. (0x10)"
+        "RemoveAll", "Remove all elements from the document. (0xff)"
+
+
+.. class:: PyCadEntityType(enum.IntEnum):
+
+    Enumeration for entity type filter.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Unknown", "Undefined type. (0)"
+        "OpenCurve", "Open curve. (0x00000001)"
+        "ClosedCurve", "Closed curve. (0x00000002)"
+        "Curve", "All curve. (0x00000001|0x00000002)"
+        "Circle", "Circle. (0x00000004)"
+        "Facettable", "All facettable surfaces including mesh. (0x00000008)"
+        "Solid", "Solid. (0x00000020)"
+        "Surface", "Surface including solid face. (0x00000040)"
+        "Point", "Point. (0x00000080)"
+        "Arc", "Arc. (0x00000800)"
+        "Group", "Group. (0x02000000)"
+        "Text", "Text. (0x04000000)"
+        "Mesh", "Mesh. (0x00001000)"
+        "VectorGraphic", "Vector graphic. (0x08000000)"
+        "DimAngular", "Angular dimension. (0x10000000)"
+        "DimDistance", "Distance dimension. (0x20000000)"
+
+
+Classes
+=======
+
+.. class:: PyRedirectOutput
+
+    .. pybind-scope:: private
+
+    Internal class to redirect the output.
+
+
+    .. method:: __init__(self, int, int, int)
+
+        .. pybind-scope:: private
+
+        .. pybind-method:: pybind11::init<int, long long const, long long const>()
+
+    .. method:: write(self, object obj)
+
+        .. pybind-scope:: private
+
+    .. method:: flush(self)
+
+        .. pybind-scope:: private
+
+
+.. class:: PyObjectTypeInfo
+
+    Stores the C++ type info of an object type.
+
+    .. attribute:: Name
+        :type: str
+
+        The human readable name of the C++ object type (readonly).
+
+    .. attribute:: RawName        
+        :type: str
+
+        The fully decorated name of the C++ object type (readonly).
+    
+    .. attribute:: HashCode
+        :type: int
+
+        A unique identifier of the object type (readonly).
+
+
+.. class:: PyObject
+    
+    .. pybind-inheritance:: PyObject_
+        
+    This is the base class of all hmPython objects. It provides some common functionality like getting the name, UUID or type information.
+
+    .. method:: GetName(self) -> str
+
+        Returns the name of the object or ``None``, if no name is set.
+
+        :return: Name of the object
+        :rtype: str
+
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the object. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the object
+        :rtype: str
+
+
+    .. method:: GetObjectNativeAddress(self) -> int
+    
+        Returns the address of the underlying C++ object in the memory.
+
+        :return: Address of the native object
+        :rtype: int
+
+    .. method:: GetPyObjectType(self) -> str
+
+        Returns the type of the C++ object, like ``class hm::bridge::py::PyObject\_``, ``class hm::bridge::py::PyApplication``, etc.
+
+        :return: Type name of the C++ object
+        :rtype: str
+
+    .. method:: GetObjectTypeInfo(self) -> PyObjectTypeInfo
+
+        Returns the C++ type information of the C++ object.
+
+        :return: C++ type information
+        :rtype: PyObjectTypeInfo
+
+    .. method:: Parent(self) -> PyObject
+
+        Returns the parent of the object or ``None``, if the object has no parent. Cast this to ``PyObject``
+
+        :return: Parent of the object.
+        :rtype: PyObject
+
+    .. method:: __str__(self) -> str
+        
+        .. pybind-function:: str
+        
+        Returns the string representation of the object. This method is typically overwritten.
+
+        :return: String representation of the object.
+        :rtype: str
+
+    .. method:: __repr__(self) -> str
+
+        .. pybind-method:: repr
+
+        Returns the string (debug) representation of the object. This method is typically overwritten.
+
+        :return: String (debug) representation of the object.
+        :rtype: str
+        
+
+.. class:: PyPoint3D(PyObject)
+
+    Stores a 3D co-ordinate.
+
+    Inherits from: :class:`PyObject`.
+
+    .. method:: __init__(self)
+        
+        .. pybind-method:: pybind11::init<>()
+
+        Initializes a new 3D point with coordinates (0, 0, 0).
+
+    .. method:: __init__(self, xyz: tuple[float])
+        :noindex:
+
+        .. pybind-method:: pybind11::init<std::tuple<double, double, double>>()
+        .. pybind-method:: pybind11::init<std::tuple<double, double, double>>()
+        
+        Initializes a new 3D point with the given tuple xyz.
+
+        :param tuple[float] xyz: Tuple (x,y,z)
+
+
+    .. method:: __init__(self, x:float, y:float, z:float)
+        :noindex:
+
+        .. pybind-method:: pybind11::init<double, double, double>()
+
+        
+        Initializes a new 3D point with the given coordinates (x, y, z).
+
+        :param float x: x-coordinate
+        :param float y: y-coordinate
+        :param float z: z-coordinate
+
+
+    .. method:: __str__(self) -> str
+
+        .. pybind-method:: str
+
+        Returns the string representation of the 3D point, e.g. "(-1.23, 4.56, 7.89)"
+        Calls :meth:`__repr__`.
+
+
+    .. method:: __repr__(self) -> str
+
+        .. pybind-method:: repr
+
+        Returns the string representation of the 3D point, e.g. "(-1.23, 4.56, 7.89)"
+
+
+    .. method:: Get(self) -> tuple[float, float, float]:
+        
+        Returns the X-, Y-, and Z-component in a tuple.
+
+        :return: X-, Y-, and Z-component as a tuple
+        :rtype: tuple[float, float, float]
+
+
+    .. method:: GetX(self) -> float
+
+        Returns the X-component.
+
+        :return: The X-component
+        :rtype: float
+
+    .. method:: GetY(self) -> float
+
+        Returns the Y-component.
+
+        :return: The Y-component
+        :rtype: float
+
+    .. method:: GetZ(self) -> float
+
+        Returns the Z-component.
+
+        :return: The Z-component
+        :rtype: float
+
+
+    .. method:: SetX(self, x: float)
+
+        Sets the X-component.
+
+        :param float x: X-component
+
+
+    .. method:: SetY(self, y: float)
+
+        Sets the X-component.
+
+        :param float y: Y-component
+
+
+    .. method:: SetZ(self, z: float)
+
+        Sets the Z-component.
+
+        :param float z: Z-component
+
+
+
+    .. property:: X(GetX, SetX) -> float
+   
+        Gets or sets the X-component of the coordinate.
+
+
+    .. property:: Y(GetY, SetY) -> float
+   
+        Gets or sets the Y-component of the coordinate.
+
+
+    .. property:: Z(GetZ, SetZ) -> float
+        
+        Gets or sets the Z-component of the coordinate.
+
+
+.. class:: PyStdOut(PyObject)
+
+    This class can be used to redirect the standard **output** stream of Python to the \ *hyper*\ MILL console.
+
+    Inherits from: :class:`PyObject`
+
+   .. literalinclude:: redirect_example.py
+       :caption: Example: Redirecting stdout and stderr in with hmPython
+       :name: redirect_example
+
+   .. method:: write(self, message: str)
+
+       Writes a message to the stream. Do not use this method directly.
+
+       :param str message: Message to be written to the output stream.
+
+   .. method:: flush(self)
+
+       Flushes the stream. This does nothing, because all data of :meth:`PyStdOut.write` writes 
+       immediately to the output. Do not use this method directly.
+
+
+.. class:: PyStdErr(PyObject)
+
+    This class can be used to redirect the standard **error** stream of Python to the \ *hyper*\ MILL console.
+    
+    Inherits from: :class:`PyObject`
+    
+    Example: :ref:`redirect_example`
+
+    .. method:: write(self, message: str)
+
+        Writes a message to the stream. Do not use this method directly.
+
+        :param str message: Message to be written to the output stream.
+
+    .. method:: flush(self)
+
+        Flushes the stream. This does nothing, because all data of :meth:`PyStdErr.write` writes 
+        immediately to the output. Do not use this method directly.
+
+    
+.. class:: PyProperty(PyObject)
+
+    A property assigns a value to a unique name, like an key/value pair in a dictionary. At the moment, only string values are supported.
+    It's commonly used in a property set :class:`PyPropertySet`.
+
+    Inherits from: :class:`PyObject`.
+
+    Example :ref:`property_example`
+
+    .. method:: GetKey(self) -> str
+
+        Returns the key (name) of the property.
+
+        :returns: Key (name) of the property
+        :rtype: str
+
+    .. method:: GetValue(self) -> str
+
+        Returns the value of the property.
+
+        :returns: Value of the property
+        :rtype: str
+
+    .. method:: SetKey(self, key: str)
+
+        Sets the key (name) of the property.
+
+        :param str key: Key (name) of the property
+
+    .. method:: SetValue(self, value: str)
+
+        Sets the value of the property.
+
+        :param str value: Value of the property
+
+    .. method:: __str__(self) -> str
+
+        .. pybind-method:: repr
+
+        Calls :meth:`__repr__`
+
+    .. method:: __repr__(self) -> str
+
+        .. pybind-method:: repr
+
+        Returns the string (debug) representation of the property.
+
+        :return: String (debug) representation of the property.
+        :rtype: str
+
+.. class:: PyPropertySet(PyObject)
+
+    A property set is a collection of properties of type :class:`PyProperty`. It's used in many classes.
+
+    Inherits from: :class:`PyObject`.
+    
+    .. literalinclude:: property_example.py
+        :caption: Example for using property sets and properties
+        :name: property_example
+
+
+    .. method:: GetCount(self) -> int
+
+        Returns the number of properties in a property set.
+
+        :return: Number of properties.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the property set is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: GetByIndex(self, index: int) -> PyProperty
+
+        Returns the property at the given index or ``None``.
+
+        :param int index: Index of the property
+        :return: Property at the index position
+        :rtype: PyProperty
+
+    .. method:: GetByKey(self, key: str) -> PyProperty
+
+        Returns the property with the given key (name) or ``None``.
+
+        :param str name: Name of the property
+        :return: Property with the given key of ``None``
+        :rtype: PyProperty
+
+    .. method:: ToDict(self) -> dict[str, str]
+
+        Copies the property set to a Python dictionary. The dictionary cannot be used to update the property set!
+        
+        :return: Dictionary that contains the key/value pairs of the property set
+        :rtype: dict[str, str]
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: GetCount
+
+        Returns the number of properties in a property set. See also :meth:`PyPropertySet.GetCount`
+
+    .. method:: __str__(self) -> str
+
+        .. pybind-method:: str
+
+        Calls :meth:`__repr__`
+
+    .. method:: __repr__(self) -> str
+
+        .. pybind-method:: repr
+
+        Returns the string (debug) representation of the property set.
+
+        :return: String (debug) representation of the property set.
+        :rtype: str
+
+    .. method:: __getitem__(self, name: str) -> PyProperty
+
+        .. pybind-method:: GetByKey
+
+        Returns the property with the given key (name) or ``None``. Can be used with indexing brackets ``properties['key']``. 
+        See also :meth:`PyPropertySet.GetByKey`.
+
+    .. method:: __getitem__(self, index: int) -> PyProperty
+        :noindex:
+
+        .. pybind-method:: GetByIndex
+
+        Returns the property at the given index or ``None``. Can be used with indexing brackets ``properties[index]``. 
+        See also :meth:`PyPropertySet.GetByIndex`.
+
+
+.. class:: PyHyperMill(PyObject)
+
+    This is an internal class.
+
+
+.. class:: PyApplication(PyObject)
+
+    Application related methods. 
+
+    Requires a running \ *hyper*\ MILL application. Use :meth:`CreatePyApplication` to instantiate the class.
+
+    Inherits from: :class:`PyObject`
+
+    .. method:: GetProperty(self, name: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+        Sets the property with the given key (name) to the value.
+
+        :param str name: Key (name) of the property
+        :param str value: New value of the property
+
+
+    .. method:: GetActiveDocument(self) -> PyDocument
+    
+        Returns the active document.
+
+        :return: Instance of the active document
+        :rtype: PyDocument
+
+    .. method:: GetResourceMgr(self) -> PyResourceMgr
+    
+        Returns the resource manager.
+
+        :return: Instance of the resource manager
+        :rtype: PyResourceMgr
+
+
+    .. method:: GetErrorCode(self) -> int
+    
+        Returns the last error code.
+
+        :return: The last error code.
+        :rtype: int
+
+    .. method:: GetStdOut(self) -> PyStdOut
+    
+        Returns a standard output stream.
+
+        :return: Standard output stream (writes to \ *hyper*\ MILL output window)
+        :rtype: PyStdOut
+
+    .. method:: GetStdErr(self) -> PyStdErr
+    
+        Returns a standard error stream.
+
+        :return: Standard error stream (writes to \ *hyper*\ MILL output window)
+        :rtype: PyStdErr
+
+
+    .. method:: ShowMessage(self, severity: PyAlertSeverity, message: str, buttons: PyAlertButton = PyAlertButton.Ok) -> PyAlertButton     
+    
+        Shows a modal message dialog with buttons.
+
+        :param PyAlertSeverity severity: Severity information: this sets the dialog icon
+        :param str message: Message to be issued
+        :param PyAlertButton buttons: Buttons to show in the dialog
+
+        :return: Pressed button.
+        :rtype: PyAlertButton
+
+        .. pybind-default:: buttons = PyAlertButton::Ok
+
+        .. literalinclude:: messageboxes.py
+            :caption: Example that demonstrates how to display and write messages
+            :name: messageboxes_example
+
+        Another example :ref:`howto_example`
+        
+
+    .. method:: WriteMessage(self, severity: PyAlertSeverity, message: str)
+    
+        Writes a message into the \ *hyper*\ MILL output window.
+        
+        :param PyAlertSeverity severity: Severity information to be shown in the output window                
+        :param str message: Message to be issued
+
+        Example :ref:`messageboxes_example`
+
+        Another example :ref:`howto_example`
+
+    
+    .. method:: Translate(self, locString: str) -> str
+
+        Translates the given \ *hyper*\ MILL translation string (``file.loc|key|default-text``).
+
+        :param str locString: The translation string, that is used in \ *hyper*\ MILL.
+        :return: Returns the translation
+        :rtype: str
+
+
+.. class:: PySelector(PyObject)
+
+    This class provides method to select CAD entities using type, layer and coloer filters
+
+    Inherits from: :class:`PyObject`
+
+    .. method:: AddEntityFilter(self, entityType:PyCadEntityType)
+    
+     Add entity type filter 
+
+    .. method:: AddLayerFilter(self, layer: str)
+    
+     Add layer filter 
+
+    .. method:: AddColorFilter(self, r: int, g: int, b: int)
+    
+     Add color filter with RGB value
+
+    .. method:: ClearFilter(self)
+    
+     Clear all defined filters
+
+    .. method:: AutoSelect() -> tuple[list[str], PyErrorStatus]
+
+     Return entity display ids considering defined filters
+
+.. class:: PyDocument(PyObject)
+
+    This class provides the top-level structures that are shown in the \ *hyper*\ MILL job browser, like jobs, frames, tools, etc.
+    It also provides a global property set.
+
+    Inherits from: :class:`PyObject`
+
+
+    .. method:: ClearDocumentData(self, options: PyClearDocumentOptions = PyClearDocumentOptions.RemoveAll) -> bool
+
+        .. pybind-default:: options = PyClearDocumentOptions::RemoveAll
+
+        Removes the given data elements from the document. See :class:PyClearDocumentOptions.
+
+        :param PyClearDocumentOptions options: Data elements to be removed.
+        :return: Returns ``True``, if the operation succeeds, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: ClearStrategyFeatureCache(self)
+
+        Removes all unused elements from the document.
+
+
+    .. method:: GetSelector(self) -> PySelector
+
+        Returns Cadshell object selector
+
+        :return: Selector
+        :rtype: PySelector
+
+
+    .. method:: GetFeaturelistSet(self) -> PyFeaturelistSet
+
+        Returns the set of the feature lists of the current document.
+
+        :return: Set of the feature lists
+        :rtype: PyFeaturelistSet
+
+
+    .. method:: GetFixtureAreaSet(self) -> PyFixtureAreaSet
+
+        Returns the set of the fixture areas of the current document.
+
+        :return: Set of the fixture areas
+        :rtype: PyFixtureAreaSet
+
+
+    .. method:: GetFrameSet(self) -> PyFrameSet
+
+        Returns the set of the frames of the current document.
+
+        :return: Set of the frames
+        :rtype: PyFrameSet
+
+    .. method:: GetJoblistSet(self) -> PyJoblistSet
+
+        Returns the set of the job lists of the current document.
+
+        :return: Set of the job lists
+        :rtype: PyJoblistSet
+
+    .. method:: GetMillingAreaSet(self) -> PyMillingAreaSet
+
+        Returns the set of the milling areas of the current document.
+
+        :return: Set of the milling areas
+        :rtype: PyMillingAreaSet
+
+    .. method:: GetStockSet(self) -> PyStockSet
+
+        Returns the set of the stocks of the current document.
+
+        :return: Set of the stocks
+        :rtype: PyStockSet
+
+    .. method:: GetTooldatabaseURL(self) -> str
+
+        Returns the path to the currently used tool database.
+
+        :return: Path to tool database
+        :rtype: str
+
+    .. method:: GetToolSet(self) -> PyToolSet
+
+        Returns a set of the tools in the current document.
+
+        :return: Set of the tools
+        :rtype: PyToolSet
+
+
+    .. method:: GetTransformationSet(self) -> PyTransformationSet
+
+        Returns the set of the transformation of the current document.
+
+        :return: Set of the transformations
+        :rtype: PyTransformationSet
+
+
+    .. method:: GetUserVariables(self) -> PyUserVariables
+
+        Returns the user variable container of the document.
+
+        :return: The user variable container
+        :rtype: PyUserVariables
+
+    .. method:: UpdateSelScripts(self) -> None
+
+        TBD.
+
+    .. method:: GetProperty(self, name: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+        Sets the property with the given key (name) to the value.
+
+        :param str name: Key (name) of the property
+        :param str value: New value of the property
+
+
+.. class:: PyResourceMgr(PyObject)
+
+    The resource manager delivers information of the installed system.
+
+    Inherits from: :class:`PyObject`
+    
+    .. literalinclude:: resmgr_example.py
+        :caption: Example of using the PyResourceMgr class
+        :name: resmgr_example
+
+    .. method:: GetGlobalWorkingSpace(self) -> str
+
+        Returns the global working space of \ *hyper*\ MILL.
+        
+        :return: Path to the global working space.
+        :rtype: str
+
+    .. method:: GetVersion(self) -> str
+
+        Returns the version of \ *hyper*\ MILL.
+        
+        :return: Version information
+        :rtype: str
+        
+    .. method:: GetProjectsDirectory(self) -> str
+
+        Returns the projects directory.
+
+        :return: Path of the projects directory
+        :rtype: str
+
+    .. method:: GetLanguage(self) -> str
+
+        Returns the current language.
+
+        :return: Name of the language
+        :rtype: str
+
+    .. method:: GetUtilAppPath(self, appName: str) -> str
+
+        TBD.
+
+    .. method:: GetFilePath(self, appName: str) -> str
+
+        TBD.
+
+    .. method:: GetMessage(self, fileName: str, id: str) -> str
+
+        TBD.
+
+    .. method:: SetAdditionalSearchPath(self, id: str, path: str) -> str
+        
+        TBD.
+
+
+.. class:: PyFeatureCollection
+
+    This is an helper class to create an iterable list of :class:`PyFeature` elements.
+
+    .. method:: At(self, index: int) -> PyFeature
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyFeature
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyFeature]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyFeature]
+
+        Creates an iterable list of type :class:`PyFeature`.
+
+        :return: Returns a list of the features.
+        :rtype: list[PyFeature]
+      
+        Example: :ref:`iterate_collection`
+
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyFeature
+
+    .. method:: items(self) -> list[PyFeature]
+
+        .. pybind-method:: Items
+
+        Calls :meth: `Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyFrame
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+    
+
+.. class:: PyFeaturelistCollection
+
+    This is an helper class to create an iterable list of :class:`PyFeaturelist` elements.
+
+    .. method:: At(self, index: int) -> PyFeaturelist
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyFeaturelist
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+
+        :return: Number of elements in the collection
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyFeaturelist]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`items` instead.
+
+    .. method:: Items(self) -> list[PyFeaturelist]
+
+        Creates an iterable list of type :class:`PyFeaturelist`.
+
+        :return: Returns a list of the feature lists.
+        :rtype: list[PyFeaturelist]
+      
+        Example: :ref:`iterate_collection`
+
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyFeaturelist
+
+
+    .. method:: items(self) -> list[PyFeaturelist]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+
+    .. method:: __getitem__(self, index: int) -> PyFrame
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyFeaturelistSet(PyObject)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary.
+
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: GetProperty(self, key: str) -> str
+
+    .. method:: SetProperty(self, key: str, value: str)
+
+    .. method:: Remove(self, uuid: str)
+
+        Removes an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be removed.
+
+
+    .. method:: Rename(self, uuid: str, newName: str)
+        
+        Renames an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be renamed.
+        :param str newName: New name of the element
+
+
+    .. method:: GetFeaturelists(self) -> PyFeaturelists
+
+    .. method:: Featurelists(self) -> PyFeaturelistCollection
+
+    .. method:: HoleFeatureMapping(self) -> bool
+
+    .. method:: PocketFeatureMapping(self) -> bool
+
+    .. method:: TurnFeatureMapping(self) -> bool
+
+
+.. class:: PyFeaturelists(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetFeaturelist(self, index: int) -> PyFeaturelist
+
+
+.. class:: PyFeaturelist(PyObject)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetName(self) -> str
+
+        Returns the name of the element.
+
+        :return: Name of the element
+        :rtype: str
+
+    .. method:: GetProperty(self, key: str) -> str
+
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the element. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the element
+        :rtype: str
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: SetProperty(self, key: str, value: str)
+
+    .. method:: GetFeatures(self) -> PyFeatures
+
+    .. method:: Features(self) -> PyFeatureCollection
+
+
+.. class:: PyFeatures(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetFeature(self, index: int) -> PyFeature
+
+
+.. class:: PyFeature(PyObject)
+
+    .. method:: FindMacroDefinition(self) -> tuple[int, list[PyMacroDefinition]]
+
+    .. method:: ApplyMacroDefinition(self, macroDef: PyMacroDefinition, joblist: PyJoblist, compoundJob: PyCompoundJob) -> PyErrorStatus
+
+    .. method:: UpdateSelectionScript(self) -> PyErrorStatus
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetName(self) -> str
+
+        Returns the name of the element.
+
+        :return: Name of the element
+        :rtype: str
+
+    .. method:: GetProperty(self, key: str) -> str
+
+    .. method:: GetSurfaceSelection(self, key: str) -> PySurfaceSelection
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the element. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the element
+        :rtype: str
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+    .. method:: SetProperty(self, key: str, value: str)
+
+
+.. class:: PyMacroDefinition(PyObject)
+
+    .. method:: GetMacroDefinitionID() -> str
+
+    .. method:: GetMacroName() -> str
+
+    .. method:: GetMacroComment() -> str
+
+    .. method:: GetMacroType() -> str
+
+    .. method:: GetMacroUsage() -> int
+
+    .. method:: GetMaterialGroupName() -> str
+
+    .. method:: GetMachineGroupName() -> str
+
+
+.. class:: PyFixtureAreaSet(PyObject)
+
+    .. method:: Rename(self, uuid: str, newName: str)
+
+        TBD.
+
+
+    .. method:: Remove(self, uuid: str)
+
+        TBD.
+
+
+    .. method:: CreateFixtureArea(self) -> PyFixtureArea
+
+        TBD.
+
+    .. method:: GetFixtureAreas(self) -> PyFixtureAreas
+
+        TBD.
+
+    .. method:: FixtureAreas(self) -> PyFixtureAreaCollection
+
+        TBD.
+
+
+.. class:: PyFixtureAreas(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+        TBD.
+
+    .. method:: GetFixtureArea(self, index: int) -> PyFixtureArea
+
+        TBD.
+
+
+.. class:: PyFixtureArea(PyObject)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: GetProperty(self, name: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+        Sets the property with the given key (name) to the value.
+
+        :param str name: Key (name) of the property
+        :param str value: New value of the property
+
+
+    .. method:: GetSurfaceSelection(self, key: str) -> PySurfaceSelection
+
+
+.. class:: PyFixtureAreaCollection
+
+    This is an helper class to create an iterable list of :class:`PyFixtureArea` elements.
+
+    .. method:: At(self, index: int) -> PyFixtureArea
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyFixtureArea
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyFixtureArea]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyFixtureArea]
+
+        Creates an iterable list of type :class:`PyFrame`.
+
+        :return: Returns a list of the frames.
+        :rtype: list[PyFrame]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyFixtureArea
+
+    .. method:: items(self) -> list[PyFixtureArea]
+        
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyFixtureArea
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyMillingAreaSet(PyObject)
+
+
+    .. method:: CreateMillingArea() -> PyMillingArea
+
+        TBD.
+
+    .. method:: CreateTurningArea(self) -> PyTurningArea
+
+        TBD.
+
+    .. method:: GetMillingAreas(self) -> PyMillingAreas
+
+        TBD.
+
+    .. method:: GetTurningAreas(self) -> PyTurningAreas
+
+        TBD.
+
+    .. method:: MillingAreas(self) -> PyMillingAreaCollection
+
+        TBD.
+
+    .. method:: TurningAreas(self) -> PyTurningAreaCollection
+
+        TBD.
+
+    .. method:: Rename(self, uuid: str, newName: str)
+
+        TBD.
+
+    .. method:: Remove(self, uuid: str)
+
+        TBD.
+
+
+.. class:: PyMillingAreas(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetMillingArea(self, index: int) -> PyMillingArea
+
+
+.. class:: PyMillingArea(PyObject)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: GetProperty(self, name: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+        Sets the property with the given key (name) to the value.
+
+        :param str name: Key (name) of the property
+        :param str value: New value of the property
+
+
+    .. method:: GetSurfaceSelection(self, key: str) -> PySurfaceSelection
+
+
+.. class:: PyMillingAreaCollection
+
+    This is an helper class to create an iterable list of :class:`PyMillingArea` elements.
+
+    .. method:: At(self, index: int) -> PyMillingArea
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyMillingArea
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyMillingArea]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyMillingArea]
+
+        Creates an iterable list of type :class:`PyFrame`.
+
+        :return: Returns a list of the frames.
+        :rtype: list[PyFrame]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyMillingArea
+
+    .. method:: items(self) -> list[PyMillingArea]
+        
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyMillingArea
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+
+.. class:: PyTurningAreas(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetTurningArea(self, index: int) -> PyTurningArea
+
+
+.. class:: PyTurningArea(PyObject)
+
+    .. method:: CreateTurningArea(mat: object, useModelColors: bool, defaultColor: int, defaultLayer: str, stockResolution: float) -> bool
+
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: GetProperty(self, key: str) -> str
+
+
+    .. method:: SetProperty(self, key: str, value: str)
+
+
+    .. method:: GetSurfaceSelection(self, key: str) -> PySurfaceSelection
+
+
+    .. method:: GetCurveSelection(self, key: str) -> PyCurveSelection
+
+
+.. class:: PyTurningAreaCollection
+
+    This is an helper class to create an iterable list of :class:`PyTurningArea` elements.
+
+    .. method:: At(self, index: int) -> PyTurningArea
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyTurningArea
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyTurningArea]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyTurningArea]
+
+        Creates an iterable list of type :class:`PyFrame`.
+
+        :return: Returns a list of the frames.
+        :rtype: list[PyFrame]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyTurningArea
+
+    .. method:: items(self) -> list[PyTurningArea]
+        
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyTurningArea
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyFrameSet(PyObject)
+
+    .. method:: Remove(self, uuid: str)
+
+        Removes an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be removed.
+
+
+    .. method:: Rename(self, uuid: str, newName: str)
+        
+        Renames an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be renamed.
+        :param str newName: New name of the element
+
+
+    .. method:: GetItemWithUUID(self, uuid: str) -> object
+
+    .. method:: GetBridgeItemWithUUID(self, uuid: str) -> object
+
+    .. method:: CreateFrame(self) -> PyFrame
+
+    .. method:: GetFrames(self) -> PyFrames
+
+    .. method:: Frames(self) -> PyFrameCollection
+    
+    .. method:: CreateOrigin(self) -> PyOrigin
+
+    .. method:: GetOrigins(self) -> PyOrigins
+
+    .. method:: Origins(self) -> PyOriginCollection
+
+
+.. class:: PyFrames(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetFrame(self, index: int) -> PyFrame
+
+
+.. class:: PyFrame(PyObject)
+
+    .. method:: GetCfgParameters(self, writeMode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetCoordinateSystem(self) -> tuple[PyPoint3d, PyPoint3d, PyPoint3d, PyPoint3d]
+        
+        Returns the the coordinate system as a tuple of four 3D points.
+
+        :return: Coordinate system as a tuple of four 3D points
+        :rtype: tuple[PyPoint3d, PyPoint3d, PyPoint3d, PyPoint3d]
+        
+        
+    .. method:: GetProperty(self, name: str) -> str
+
+    .. method:: GetName(self) -> str
+
+        Returns the name of the element.
+
+        :return: Name of the element
+        :rtype: str
+
+    .. method:: GetSurfaceSelection(self, name: str) -> PySurfaceSelection
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the element. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the element
+        :rtype: str
+
+
+    .. method:: MoveToWorkplane(self)
+
+    .. method:: SetCoordinateSystem(self, o: tuple[int], x: tuple[int], y: tuple[int], z: tuple[int]) -> bool
+
+    .. method:: SetProperty(self, name: str, value: str)
+        
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+.. class:: PyFrameCollection
+
+    This is an helper class to create an iterable list of :class:`PyFrame` elements.
+
+    .. method:: At(self, index: int) -> PyFrame
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyFrame
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyFrame]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyFrame]
+
+        Creates an iterable list of type :class:`PyFrame`.
+
+        :return: Returns a list of the frames.
+        :rtype: list[PyFrame]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyFrame
+
+    .. method:: items(self) -> list[PyFrame]
+        
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyFrame
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyOrigins(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetOrigin(self, index: int) -> PyFrame
+
+
+.. class:: PyOrigin(PyObject)
+
+    .. method:: GetProperty(self, name: str) -> str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+    .. method:: GetCfgParameters(self, writeMode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+        
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+.. class:: PyOriginCollection
+
+    This is an helper class to create an iterable list of :class:`PyOrigin` elements.
+
+    .. method:: At(self, index: int) -> PyOrigin
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyOrigin
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyOrigin]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[PyOrigin]
+
+        Creates an iterable list of type :class:`PyOrigin`.
+
+        :return: Returns a list of the origins.
+        :rtype: list[PyOrigin]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyOrigin
+
+    .. method:: items(self) -> list[PyOrigin]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyOrigin
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyTransformationSet(PyObject)
+
+    .. method:: Remove(self, uuid: str)
+
+        Removes an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be removed.
+
+
+    .. method:: Rename(self, uuid: str, newName: str)
+        
+        Renames an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be renamed.
+        :param str newName: New name of the element
+
+
+    .. method:: GetItemWithUUID(self, uuid: str) -> object
+
+    .. method:: GetBridgeItemWithUUID(self, uuid: str) -> object
+
+    .. method:: GetTransformations(self) -> PyTransformations
+
+    .. method:: CreateTransformation(self, type: PyTransformationType) -> PyTransformation
+
+    .. method:: Transformations(self) -> PyTransformationCollection
+
+
+.. class:: PyTransformations(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetTransformation(self, index: int) -> PyFrame
+
+
+.. class:: PyTransformation(PyObject)
+
+    .. method:: GetProperty(self, name: str) -> str
+
+    .. method:: SetProperty(self, name: str, value: str)
+
+    .. method:: GetCfgParameters(self, writeMode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+        
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+    .. method:: GetSurfaceSelection(self, key: str) -> PySurfaceSelection
+    .. method:: GetCurveSelection(self, propName: str) -> PyCurveSelection
+
+.. class:: PyTransformationCollection
+
+     This is an helper class to create an iterable list of :class:`PyTransformation` elements.
+
+    .. method:: At(self, index: int) -> PyTransformation
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyTransformation
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+    .. method:: ToList(self) -> list[PyTransformation]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[PyTransformation]
+
+        Creates an iterable list of type :class:`PyTransformation`.
+
+        :return: Returns a list of the transformations.
+        :rtype: list[PyTransformation]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyTransformation
+
+    .. method:: items(self) -> list[PyTransformation]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyTransformation
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyJoblistSet(PyObject)
+
+    The joblist set is the root of all joblists in the \ *hyper*\ MILL browser panel.
+
+    .. method:: CalculateNC(self, uuids: list[str]) -> bool
+
+        TBD.
+
+
+    .. method:: CalculateStockmodel(self, uuids: list[str], resultStock: str, tolerance: float, useProgressBar: bool) -> tuple[str, PyStock]
+
+        Calculates a new stock model and returns its filename and object as tuple.
+        
+        :returns: Returns a tuple of a filename and a new stock.
+        :rtype: tuple[str, PyStock]
+
+
+    .. method:: CreateJoblist(self) -> PyJoblist
+
+        Creates a new joblist in the set.
+
+        :return: Returns the joblist.
+        :rtype: PyJoblist
+
+
+    .. method:: CreateSmartStockChain(self, uuids: list[str]) -> bool
+
+        TBD.
+
+
+    .. method:: CreateStockChain(self, uuids: list[str]) -> bool
+
+        TBD.
+
+
+    .. method:: ExportToFile(self, filepath: str, uuids: list[str], options: int) -> bool
+
+        TBD.
+
+
+    .. method:: GenerateReport(self, uuids: list[str], scriptPath: str, overwrite: bool) -> bool
+
+        TBD.
+
+
+    .. method:: GenerateHMReport(self, uuids: list[str], scriptPath: str, options: int) -> str
+
+        Creates a report using the hyperMILL report function.
+
+        :param list[str] uuids: Jobs or job list a report should be created for.
+        :param str scriptPath: Path and name of the XSLT report script to be used to create the report.
+        :param int options: A combination of flags from PyGenerateHMReportOptions to control the behaviour of the function.
+        :return: Path and file name of the created report.
+
+
+    .. method:: GetBridgeItemWithUUID(self, uuid: str) -> object
+
+        TBD.
+
+
+    .. method:: GetItemWithUUID(self, uuid: str) -> object
+        
+        TBD.
+
+
+    .. method:: GetJoblists(self) -> PyJoblists
+
+        Returns the enumeration helper class :class:`PyJoblists`.
+
+        :return: Enumeration helper class.
+        :rtype: PyJoblists
+
+    .. method:: GetPropertySet(self) -> PyPropertySet
+
+        TBD.
+
+
+    .. method:: ImportFromFile(self, filePath: str, joblistUUID: str, options: int) -> bool
+
+        Imports the job list from the given file.
+
+        :param str filePath: Path to the file containing the job list definition
+        :param str uuid: UUID of the joblist
+        :param int options: Reserved
+
+        :return: Returns ``True`` if the operation was successful, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: Joblists(self) -> PyJoblistCollection
+
+        Returns the helper collection for :class:`PyJoblist`.
+
+        Use :meth:`items` to iterate through the collection
+
+        Example :ref:`iterate_collection`
+
+
+    .. method:: Move(self, uuid: str, uuidTo: str, insertBefore: bool = False, insertIn: bool = True) -> None
+
+        Moves an element relative to another element within the tree of the set. The elements are identified by their UUID.
+
+        :param str uuid: Source element to move
+        :param str uuidTo: Destimation element
+        :param bool insertBefore: Inserts before the given element
+        :param bool insertIn: Inserts into the given element
+
+        .. pybind-default:: insertBefore = false
+        .. pybind-default:: insertIn = true
+
+        .. literalinclude:: create_compoundjob.py
+            :caption: A more sophisticated example with UI creating jobs, translating and moving around
+            :name: create_compoundjob
+
+
+    .. method:: Remove(self, uuid: str)
+
+        Removes an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be removed.
+
+        Example :ref:`create_compoundjob`
+
+
+    .. method:: RemoveStockChain(self, uuids: list[str]) -> bool
+
+        TBD.
+
+
+    .. method:: Rename(self, uuid: str, newName: str)
+        
+        Renames an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be renamed.
+        :param str newName: New name of the element
+
+        Example :ref:`create_compoundjob`
+
+
+    .. method:: RunAll(self)
+
+        TBD.
+
+
+    .. method:: Run(self, uuid: str)
+
+        TBD.
+
+
+    .. method:: Update(self, uuid: str)
+
+        TBD.
+
+
+.. class:: PyJoblists(PyObject)
+
+    Enumeration helper class containing :class:`PyJoblist` elements.
+
+    .. method:: GetCount(self) -> int
+
+        Returns the number of elements in the list.
+
+        :return: Number of elements
+        :rtype: int
+
+    .. method:: GetJoblist(self, index: int) -> PyJoblist
+
+        Returns the element and the given index position.
+        :param int index: Index position
+        :return: Element at the given position
+        :rtype: PyJoblist
+
+.. class:: PyJoblist(PyObject)
+
+    .. method:: CfgParameters(self) -> PyCfgParameters
+
+        Returns the configuration parameters as an object.
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+    .. method:: Children(self) -> PyJobObjectCollection
+
+    .. method:: CreateJob(self, cycleType: str) -> PyJob
+
+        Creates a new job in the joblist with the given cycle type.
+
+        :param str cycleType: Cycle type of the job (e.g. "Ccc", "DcenX5")
+        :return: Returns the created job
+        :rtype: PyJob
+
+
+    .. method:: GetChildren(self) -> PyJobObjects
+
+        TBD.
+
+
+    .. method:: GetJoblistStatus(self) -> PyJoblistStatus
+
+        Returns the status of the joblist.
+
+        :return: The status of the joblist.
+        :rtype: PyJoblistStatus
+
+
+    .. method:: GetJobs(self) -> PyJobs
+
+        TBD.
+
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+
+
+    .. method:: GetPropertySet(self) -> PyPropertySet
+
+        TBD.
+
+
+    .. method:: GetName(self) -> str
+
+        Returns the name of the element.
+
+        :return: Name of the element
+        :rtype: str
+
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the element. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the element
+        :rtype: str
+
+
+    .. method:: Jobs(self) -> PyJobCollection
+
+
+    .. method:: Optimize(self, frameToTool: bool) -> PyErrorStatus
+
+        This is a legacy function. Please use :meth:`OptimizeWithSorting` instead.
+        Optimizes the joblist and groups the jobs. Existing component jobs or sub-joblists will be dissolved. The macro sequence is NOT verified after optimization.
+
+        :param bool frameToTool: Set this to False.
+        :rtype: PyErrorStatus
+        :return: Returns PyErrorStatus.Ok, if the method succeeds otherwise an error code.
+        
+
+    .. method:: OptimizeWithSorting(self, optimization: PyJoblistOptimization, toolSorting: PyJoblistOptWithToolSorting = PyJoblistOptWithToolSorting.Off, createCompoundJobs: PyJoblistOptWithCompoundJobs = PyJoblistOptWithCompoundJobs.Off) -> PyErrorStatus
+
+        Optimizes the joblist with different parameters. After execution the macro sequence is verified.
+
+        :param PyJoblistOptimization optimization: Sets the optimization parameters
+        :param PyJoblistOptWithToolSorting toolSorting: Enables the tool sorting and the sort order
+        :param PyJoblistOptWithCompoundJobs createCompoundJobs: Groups the items into compound jobs after optimization
+
+        :rtype: PyErrorStatus
+        :return: Returns PyErrorStatus.Ok, if the method succeeds otherwise an error code. If the verification fails, PyErrorStatus.InternalError is returned.
+        
+        .. pybind-default:: toolSorting = PyJoblistOptWithToolSorting::Off
+        .. pybind-default:: createCompoundJobs = PyJoblistOptWithCompoundJobs::Off
+
+
+    .. method:: OptimizeSelectionWithSorting(self, uuidList: list[str], optimization: PyJoblistOptimization, toolSorting: PyJoblistOptWithToolSorting = PyJoblistOptWithToolSorting.Off, createCompoundJobs: PyJoblistOptWithCompoundJobs = PyJoblistOptWithCompoundJobs.Off) -> PyErrorStatus
+
+        Optimizes the joblist with different parameters. After execution the macro sequence is verified.
+
+        :param list[str] uuidList: A list of jobs/compound jobs that should be included in the optimization
+        :param PyJoblistOptimization optimization: Sets the optimization parameters
+        :param PyJoblistOptWithToolSorting toolSorting: Enables the tool sorting and the sort order
+        :param PyJoblistOptWithCompoundJobs createCompoundJobs: Groups the items into compound jobs after optimization
+
+        :rtype: PyErrorStatus
+        :return: Returns PyErrorStatus.Ok, if the method succeeds otherwise an error code. If the verification fails, PyErrorStatus.InternalError is returned.
+        
+        .. pybind-default:: toolSorting = PyJoblistOptWithToolSorting::Off
+        .. pybind-default:: createCompoundJobs = PyJoblistOptWithCompoundJobs::Off
+
+
+    .. method:: CheckMacroSequence(self) -> bool:
+
+        Checks, if there are errors in the macro sequence and sets an warning in the corresponding message object.
+
+        :rtype: bool
+        :return: Returns True, if the macrosequence is ok, otherwise False
+
+
+    .. method:: SetJobIds(self)
+
+        Calculates new job IDs and assigns them to all jobs.
+
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+        TBD.
+
+
+    .. method:: CreateCompoundJob(self) -> PyCompoundJob
+
+        Creates a new compound job in the joblist.
+
+        :return: Returns the new compound job
+        :rtype: PyCompoundJob
+
+
+    .. method:: CreateSubJoblist(self) -> PySubJoblist
+
+        Creates a new sub-joblist in the joblist.
+
+        :return: Returns the new sub-joblist
+        :rtype: PySubJoblist
+    
+
+.. class:: PyJobObjectCollection
+
+    This is an helper class to create an iterable list of object elements.
+
+    .. method:: At(self, index: int) -> object
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: object
+
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[object]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[object]
+
+        Creates an iterable list of type :class:`object`. 
+        The object can be of type :class:`PyJob`, :class:`PyCompoundJob`, :class:`PySubJoblist`.
+
+        :return: Returns a list of the jobs.
+        :rtype: list[object]
+      
+        .. literalinclude:: iterate_collection.py
+            :caption: Basic example how to iterate through a collection like PyJoblistCollection of PyJobCollection
+            :name: iterate_collection
+
+
+    .. method:: items(self) -> list[object]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> object
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+
+.. class:: PyJobObjects
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetObject(self, index: int) -> object
+        
+        .. pybind-method:: GetObject_
+
+
+.. class:: PyJoblistCollection
+
+    This is an helper class to create an iterable list of :class:`PyJoblist` elements.
+
+    .. method:: At(self, index: int) -> PyJoblist
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyJoblist
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyJoblist]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[PyJoblist]
+
+        Creates an iterable list of type :class:`PyJoblist`.
+
+        :return: Returns a list of the job lists.
+        :rtype: list[PyJoblist]
+      
+        Example: :ref:`iterate_collection`
+
+    .. method:: Find(text: str, hint: PySearchHint) -> PyJoblist
+
+    .. method:: items(self) -> list[PyJoblist]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyJoblist
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyJobs(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+        Returns the number of elements in the list.
+
+        :return: Number of elements
+        :rtype: int
+
+    .. method:: GetJob(self, index: int) -> PyJob
+
+
+.. class:: PyJob(PyObject)
+
+    .. method:: CfgParameters(self) -> PyCfgParameters
+
+        Returns the configuration parameters as an object.
+
+    .. method:: CheckConsistency(self)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetCurveSelection(self, propName: str) -> PyCurveSelection
+
+    .. method:: GetJobStatus(self) -> PyJobStatus
+
+        Returns the job status.
+
+        :return: Job status
+        :rtype: PyJobStatus
+
+
+    .. method:: GetParent(self) -> PyObject
+
+    .. method:: GetPOFStatus(self) -> PyPOFStatus
+
+        Returns the POF status of the job.
+
+        :return: POF Status
+        :rtype: PyPOFStatus
+
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+
+    .. method:: GetPropertySet(self) -> PyPropertySet
+    
+    .. method:: GetSurfaceSelection(self, propName: str) -> PySurfaceSelection
+
+
+    .. method:: GetTool(self) -> PyTool
+
+        Returns the tool that is used in the job.
+
+        :return: Tool of the job.
+        :rtype: PyTool
+
+        .. literalinclude:: count_toolchanges.py
+            :caption: Iterates over all jobs and checks each tool that is used in the job
+            :name: count_toolchanges
+
+
+    .. method:: IsLinkingJob(self) -> bool
+    
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+    .. method:: SetTool(self, uuid: str)
+
+    .. method:: GetCycleDescProperty(self, propName: str) -> str
+
+
+.. class:: PyJobCollection
+
+    This is an helper class to create an iterable list of :class:`PyJob` elements.
+
+    .. method:: At(self, index: int) -> PyJob
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyJob
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyJob]
+
+        .. pybind-method:: Items
+
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[PyJob]
+
+        Creates an iterable list of type :class:`PyJob`.
+
+        :return: Returns a list of the jobs.
+        :rtype: list[PyJob]
+              
+        Example :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyJob
+
+    .. method:: items(self) -> list[PyJob]
+
+        .. pybind-method:: Items
+            
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyJob
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyCompoundJob(PyObject)
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: GetJobs(self) -> PyJobs
+
+    .. method:: GetParent(self) -> PyObject
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+
+    .. method:: GetPropertySet(self) -> PyPropertySet   
+
+    .. method:: Jobs(self) -> PyJobCollection
+    
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+   .. method:: OptimizeWithSorting(self, optimization: PyJoblistOptimization, toolSorting: PyJoblistOptWithToolSorting = PyJoblistOptWithToolSorting.Off) -> PyErrorStatus
+
+       Optimizes the joblist with different parameters. After execution the macro sequence is verified.
+
+       :param PyJoblistOptimization optimization: Sets the optimization parameters
+       :param PyJoblistOptWithToolSorting toolSorting: Enables the tool sorting and the sort order
+   
+       :rtype: PyErrorStatus
+       :return: Returns PyErrorStatus.Ok, if the method succeeds otherwise an error code. If the verification fails, PyErrorStatus.InternalError is returned.
+       
+       .. pybind-default:: toolSorting = PyJoblistOptWithToolSorting::Off
+
+
+.. class:: PySubJoblist(PyObject)
+
+    .. method:: Children(self) -> PyJobObjectCollection
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetJobs(self) -> PyJobs
+
+    .. method:: GetParent(self) -> PyObject
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+
+    .. method:: GetPropertySet(self) -> PyPropertySet   
+
+    .. method:: Jobs(self) -> PyJobCollection
+    
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+
+.. class:: PySurfaceSelection(PyObject)
+
+    .. method:: GetSelection() -> tuple[list[str], PyErrorStatus]
+
+    .. method:: SetSelection(dispIDs: list[str]) -> PyErrorStatus
+
+
+.. class:: PyStockSet(PyObject)
+
+    .. method:: CreateStock(self) -> PyStock
+
+    .. method:: GetStocks() -> PyStocks
+
+    .. method:: Stocks() -> PyStockCollection
+
+.. class:: PyStocks(PyObject)
+
+    .. method:: GetCount() -> int
+
+    .. method:: GetStock(index: int) -> PyStock
+
+
+.. class:: PyStockCollection
+
+    This is an helper class to create an iterable list of :class:`PyStock` elements.
+
+    .. method:: At(self, index: int) -> PyStock
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyStock
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyStock]
+
+        .. pybind-method:: Items
+        
+        DEPRECATED. Use :meth:`Items` instead.
+
+
+    .. method:: Items(self) -> list[PyStock]
+
+        Creates an iterable list of type :class:`PyStock`.
+
+        :return: Returns a list of the stocks.
+        :rtype: list[PyJob]
+              
+        Example :ref:`iterate_collection`
+
+    .. method:: Find(self, text: str, hint: PySearchHint) -> PyStock
+
+    .. method:: items(self) -> list[PyStock]
+
+        .. pybind-method:: Items
+        
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyStock
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+
+.. class:: PyStock(PyObject)
+
+    .. method:: CreateBoundingStock(origin: PyPoint3D, x: PyPoint3D, y: PyPoint3D, z: PyPoint3D, bndMode: int, dispIds: str) -> bool
+
+    .. method:: GetCurveSelection(propName: str) -> PyCurveSelection
+
+    .. method:: GetName(self) -> str
+        
+        Returns the name of the element.
+
+        :return: Name of the element
+        :rtype: str
+
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+    .. method:: GetSurfaceSelection(propName: str) -> PySurfaceSelection
+
+    .. method:: GetUUID(self) -> str
+
+        Returns the UUID of the element. The UUID is in the format ``D0627A7C-CB39-4801-A485-75338DFA6706``.
+
+        :return: UUID of the element
+        :rtype: str
+
+
+    .. method:: SetCfgParameters(self, config: dict[str, str]) -> bool
+
+        Sets the configuration properties of the object.
+
+        :param dict[str, str] config: Sets the configuration from the given string-to-string dictionary.
+        :return: Returns ``True`` if the configuration is successfully set, otherwise ``False``.
+        :rtype: bool
+
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+
+.. class:: PyCurveSelection(PyObject)
+
+    .. method:: GetChaining(self) -> bool
+
+    .. method:: SetChaining(self, chaining: bool)
+
+    .. method:: GetChainingTolerance(self) -> float
+
+    .. method:: SetChainingTolerance(self, tolerance: float)
+
+    .. method:: SetSelection(dispIDs: list[str]) -> PyErrorStatus
+
+    .. method:: GetSelection() -> tuple[list[str], PyErrorStatus]
+
+
+.. class:: PyTool(PyObject)
+
+    This class holds the definition of a tool in the tool set.
+
+    Example :ref:`count_toolchanges`
+
+
+    .. method:: GetCfgParameters(self, mode: PyConfigIO = PyConfigIO.WriteEdit) -> dict[str, str]
+        
+        .. pybind-default:: mode = PyConfigIO::WriteEdit
+
+        Returns the configuration properties of the object as a string-to-string dictionary            
+        :param PyConfigIO mode: Access mode to the data
+        :return: A string-to-string dictionary of all properties
+        :rtype: dict[str, str]
+
+
+    .. method:: GetProperty(self, propName: str) -> str
+
+        Returns the property given by the key (name) or ``None``.
+
+        :param str name: Key (name) of the property
+        
+        :return: Property or ``None``
+        :rtype: str
+
+        Example :ref:`count_toolchanges`
+
+
+    .. method:: GetPropertySet(self) -> PyPropertySet
+
+    .. method:: SetCfgParameters(self, cfgParams: dict[str, str]) -> bool
+
+    .. method:: SetProperty(self, propName: str, propValue: str)
+
+    .. method:: GetCoolantInfo(self, coolantNr: int) -> dict[str, str]
+
+        Returns the coolant information for the given coolant number.
+
+        :param int coolantNr: Coolant number
+
+        :return: Returns the coolant information. The dictionary is empty, if no information was found.
+        :rtype: dict[str, str]
+
+
+.. class:: PyToolSet(PyObject)
+
+    .. method:: AddDBTool(self, toolID: str) -> PyErrorStatus
+
+    .. method:: AddDBToolDepot(self, toolID: str, ncDepotPath: str) -> PyErrorStatus
+
+    .. method:: GetTools(self) -> PyTools
+
+    .. method:: Rename(self, uuid: str, newName: str)
+        
+        Renames an element from the tree of the set.
+
+        :param str uuid: UUID of the element to be renamed.
+        :param str newName: New name of the element
+
+
+    .. method:: Tools(self) -> PyToolCollection
+
+
+.. class:: PyToolCollection
+
+    This is an helper class to create an iterable list of :class:`PyTool` elements.
+
+    .. method:: At(self, index: int) -> PyTool
+
+        Returns the element at the given index. Throws an exception if the index is out of range.
+
+        :param int index: Index to be accessed
+        :return: Element an the given index
+        :rtype: PyTool
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the collection.
+        
+        :return: Number of elements in the collection.
+        :rtype: int
+
+    .. method:: Empty(self) -> bool
+
+        Checks, if the collection is empty.
+
+        :return: Returns ``True``, if the collection is empty, otherwise ``False``
+        :rtype: bool
+
+
+    .. method:: ToList(self) -> list[PyTool]
+
+        .. pybind-method:: Items
+            
+        DEPRECATED. Use :meth:`Items` instead.
+
+    .. method:: Items(self) -> list[PyTool]
+
+        Creates an iterable list of type :class:`PyTool`.
+
+        :return: Returns a list of the tools.
+        :rtype: list[PyTool]
+              
+        Example :ref:`iterate_collection`
+
+    .. method:: Find(text: str, hint: PySearchHint) -> PyTool
+
+    .. method:: items(self) -> list[PyTool]
+
+        .. pybind-method:: Items
+
+        Calls :meth:`Items`.
+
+    .. method:: __len__(self) -> int
+
+        .. pybind-method:: Count
+
+        Calls :meth:`Count`.
+
+    .. method:: __getitem__(self, index: int) -> PyJob
+
+        .. pybind-method:: At
+
+        Calls :meth:`At`.
+
+.. class:: PyTools(PyObject)
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: GetTool(self, index: int) -> PyTool
+
+
+.. class:: PyUserVariables(PyObject)
+
+    .. method:: IsValidName(self, key: str) -> bool
+
+    .. method:: GetCount(self) -> int
+
+    .. method:: SetVariable(self, key: str, value: str, valueType: PyValueType, desc: str = None) -> PyErrorStatus
+
+    .. method:: GetVariable(self, key: str) -> tuple[str, str, PyValueType, str]
+
+        .. pybind-method:: pybind11::overload_cast<PyStringCRef>(&PyUserVariables::GetVariable)
+
+        Returns the user variable with the given key(name).
+
+        :param str key: Name of the user variable.
+        :return: A tuple [str, str, PyValueType, str] with these elements [Name, value, data type of the value, description]
+        :rtype: tuple[str, str, PyValueType, str]
+
+    .. method:: GetVariable(self, idx: int) -> tuple[str, str, PyValueType, str]
+        :noindex:
+
+        .. pybind-method:: pybind11::overload_cast<unsigned int>(&PyUserVariables::GetVariable)
+
+        Returns the user variable with the given index.
+
+        :param str key: Name of the user variable.
+        :return: A tuple [str, str, PyValueType, str] with these elements [Name, value, data type of the value, description]
+        :rtype: tuple[str, str, PyValueType, str]
+
+
+.. class:: PyCfgParameters
+
+    This is a helper class to manage the configuration parameters of a hyperMILL object.
+
+    .. method:: GetAll(self) -> dict[str, str]
+
+    .. method:: Get(self, name: str) -> str
+
+    .. method:: SetAll(self, cfg: dict) -> bool
+
+    .. method:: Set(self, name: str, value: str) -> bool
+
+    .. method:: Count(self) -> int
+
+        Returns the number of elements in the configuration
+
+        :return: The number of variables in the configuration
+        :rtype: int
+
+    .. method:: Exists(self, name: str) -> bool
+
+        Returns if the variable exists in the configuration
+
+        :param str name: Name of the variable
+        :return: Returns ``True``, if the variable is defined in the configuration, otherwise it's ``False``.
+        :rtype: bool
+
+
+.. class:: PyAPIBridgeException(PyObject)
+
+.. class:: PyAPIBridgeIndexOutOfRangeException
+
+.. class:: PyAPIBridgeNativeClassIsNullException
+
+.. class:: PyAPIBridgeNullArgumentException
+
+.. class:: PyHyperMillException
+
+.. class:: PyHyperMillLibraryException
+
+.. class:: PyEnumHelper
+
+    This is a helper class that provides some additional information for enumeration.
+
+    .. staticmethod:: GetEnumDict(enumClass: object) -> dict[str, int]
+
+        Returns a dictionary containing the UTF-8 value names and their values.        
+
+        :param object enumClass: Enumeration class to be inspected
+
+        :returns: Returns a key/value dictionary in UTF-8
+        :rtype: dict[str, int]
+
+
+    .. staticmethod:: GetEnumDictW(enumClass: object) -> dict[str, int]
+
+
+        Returns a dictionary containing the Unicode value names and their values.        
+
+        :param object enumClass: Enumeration class to be inspected
+
+        :returns: Returns a key/value dictionary in Unicode
+        :rtype: dict[str, int]

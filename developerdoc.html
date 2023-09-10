@@ -1,0 +1,670 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Developer documentation for Python &#8212; hmPython  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer documentation for Python</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="developer-documentation-for-python">
+<h1>Developer documentation for Python<a class="headerlink" href="#developer-documentation-for-python" title="Permalink to this headline">¶</a></h1>
+<section id="externals">
+<span id="ref-externals"></span><h2>Externals<a class="headerlink" href="#externals" title="Permalink to this headline">¶</a></h2>
+<p>We need some SVN externals for Python. These are defined in the SVN properties the hyperMILL trunk.</p>
+<img alt="SVN externals for Python" src="_images/python_externals.png" />
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Externals</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>URL</p></th>
+<th class="head"><p>Repository</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="http://om-svn-x64/svn/python/trunk/bin">http://om-svn-x64/svn/python/trunk/bin</a></p></td>
+<td><p>hyperMILL/hmPython/build/python</p></td>
+<td><p>Python embedded version that’s used to build Python libraries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="http://om-svn-x64/svn/python-build/trunk">http://om-svn-x64/svn/python-build/trunk</a></p></td>
+<td><p>hyperMILL/hmPython/build/python-build</p></td>
+<td><p>Additional packages for the build process</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="http://om-svn-x64/svn/pybind11">http://om-svn-x64/svn/pybind11</a></p></td>
+<td><p>extern/pybind</p></td>
+<td><p>Includes and libraries to use Pybind11</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="http://om-svn-x64.mum.de/svn/python/trunk/lib">http://om-svn-x64.mum.de/svn/python/trunk/lib</a></p></td>
+<td><p>extern/python</p></td>
+<td><p>Includes and libraries to use Python functions</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Please perform an SVN UPDATE on the trunk to update these files!</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The SVN are subject to change, due to migration to Github.</p>
+</div>
+<p>See also <a class="reference internal" href="#ref-python-deployment"><span class="std std-ref">Summary: From repositories to deployment path</span></a></p>
+</section>
+<section id="visual-studio-solutions-und-project-structures">
+<h2>Visual Studio solutions und project structures<a class="headerlink" href="#visual-studio-solutions-und-project-structures" title="Permalink to this headline">¶</a></h2>
+<p>The Python projects are part of the solution <code class="docutils literal notranslate"><span class="pre">hyperMILL.sln</span></code>. This solution is also used to build the project on the Jenkins server.
+For daily use the “convenience project” <code class="docutils literal notranslate"><span class="pre">hmPython.sln</span></code> might be the better choice.</p>
+<p>The main Python projects are listed below. They have to be build in the given order.</p>
+<table class="colwidths-given docutils align-default" id="id3">
+<caption><span class="caption-text">Main projects</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 20%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Project</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.1</p></td>
+<td><p>trunk/hyperMILL/hmPython/hmPrePython</p></td>
+<td><p>Checks the externals and copies the files to the build directory, generates version information</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.2</p></td>
+<td><p>trunk/hyperMILL/hmPython/hcsPybind</p></td>
+<td><p>Copies local Python files from hyperCAD-S (if available) to the build directory</p></td>
+</tr>
+<tr class="row-even"><td><p>1.1</p></td>
+<td><p>trunk/hyperMILL/hmPython/hmSphinx</p></td>
+<td><p>Contains the documentation for Python and generates the pybind and intellisense files</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.2</p></td>
+<td><p>trunk/hyperMILL/hmPython/hmCore</p></td>
+<td><p>Base classes for the CAM Python, encapsulates the hyperMILL COM API</p></td>
+</tr>
+<tr class="row-even"><td><p>1.3</p></td>
+<td><p>trunk/hyperMILL/hmPython/hmUi</p></td>
+<td><p>Base dialogs for the UI</p></td>
+</tr>
+<tr class="row-odd"><td><p>99.1</p></td>
+<td><p>trunk/hyperMILL/hmPython/hmPython</p></td>
+<td><p>Generates the deployment package for Python</p></td>
+</tr>
+</tbody>
+</table>
+<p>There are some other projects that are needed to compile the Python libraries, but they are changed less often.</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Side projects</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Project</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>trunk/hyperMILL/PROJECTS/hmAPI/hmAPIBridge</p></td>
+<td><p>Commonly used base classes für COM server und Python</p></td>
+</tr>
+<tr class="row-odd"><td><p>trunk/hyperMILL/PROJECTS/hmAPI/hmAPIPyScript</p></td>
+<td><p>Classes to execute Python scripts in hyperMILL</p></td>
+</tr>
+<tr class="row-even"><td><p>trunk/hyperMILL/PROJECTS/hmAPI/hmAPIServer</p></td>
+<td><p>COM Server API</p></td>
+</tr>
+<tr class="row-odd"><td><p>trunk/hyperMILL/UTILS/hmPythonRunner</p></td>
+<td><p>Run Python Script… module</p></td>
+</tr>
+<tr class="row-even"><td><p>trunk/hypermILL/PROJECTS/hmJob/omUiJob</p></td>
+<td><p>Contains the Python dialog</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="typical-workflow">
+<h2>Typical workflow<a class="headerlink" href="#typical-workflow" title="Permalink to this headline">¶</a></h2>
+<p>Adding or updating methods:</p>
+<ol class="arabic simple">
+<li><p>Change the source code in the project (e. g. hmCore)</p></li>
+<li><p>New changes or updated parameters must be ALWAYS changed in hmSphinx (e.g. coredoc.rst). This step is especially important,
+because the hmSphinx scripts generate from this documentation the interfaces for pybind11.
+Rebuild hmSphinx after the changes.</p></li>
+<li><p>Rebuild the projects that are related to the changes.</p></li>
+<li><p>At least Rebuild ALWAYS the project hmPython, to collect all information and publish it in
+the <code class="docutils literal notranslate"><span class="pre">OPEN</span> <span class="pre">MIND/.../Shared/python</span></code> folder.</p></li>
+</ol>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">Rebuild</span> <span class="pre">only</span></code> to build the projects. Build may not run, because some files are not under control by Visual Studio.
+Rebuild may take too long…</p>
+</div>
+</section>
+<section id="build-environment">
+<h2>Build environment<a class="headerlink" href="#build-environment" title="Permalink to this headline">¶</a></h2>
+<p>The shared build directory with a local (embedded) Python installation is <code class="docutils literal notranslate"><span class="pre">trunk/hyperMILL/hmPython/build</span></code>. Rebuild hmPrePython to Initializes
+the build environment.</p>
+<section id="hmsphinx-artifacts">
+<h3>hmSphinx artifacts<a class="headerlink" href="#hmsphinx-artifacts" title="Permalink to this headline">¶</a></h3>
+<p>The artifacts of hmSphinx are generated by the script <code class="docutils literal notranslate"><span class="pre">hmSphinx\scripts\run_sphinx.bat</span></code>. The generated files can be found the build directory.
+The following folders will be created:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Folder</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sphinx_init</p></td>
+<td><p>This folder contains the structure for each module. The generated Python files are loading the Pybind DLLs or the intellisense.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pybind</p></td>
+<td><p>Class declarations for Pybind11. hmSphinx generates for each project two files &lt;<em>project</em>&gt;_h.inc als Include für den Header, &lt;<em>project</em>&gt;_cpp.inc als Include für die Source-Datei</p></td>
+</tr>
+<tr class="row-even"><td><p>html</p></td>
+<td><p>HTML documentation for Python. This folder will be archived in <code class="docutils literal notranslate"><span class="pre">hmpython_html.zip</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hm-project-artifacts">
+<h3>hm&lt;<em>project</em>&gt; artifacts<a class="headerlink" href="#hm-project-artifacts" title="Permalink to this headline">¶</a></h3>
+<p>The different hm&lt;<em>project</em>&gt; projects (hmCore, hmUi, …) generate DLL files with the names <code class="docutils literal notranslate"><span class="pre">_hm&lt;project&gt;X64.dll</span></code> (and corresponding .pdb files), e.g. _hmCoreX64.dll an _hmCoreX64.pdb.
+These files will be also copied to the hyperMILL-Win64 directory.</p>
+</section>
+<section id="hmpython-artifacts">
+<h3>hmPython artifacts<a class="headerlink" href="#hmpython-artifacts" title="Permalink to this headline">¶</a></h3>
+<p>The project hmPython copies all necessary artifacts from the Python build directory to the folder <code class="docutils literal notranslate"><span class="pre">OPEN</span> <span class="pre">MIND/Shared/&lt;version&gt;/python/Lib/om</span></code>.</p>
+<img alt="Python/Lib directory structure" src="_images/python_lib_directories.png" />
+<p>These files are also read by omUpdate on the Jenkins build server and will be deployed with hyperMILL.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>EGG and WHL archives are no longer deployed, because some of the additional packages (e.g. debugpy) can’t be deployed in an archive.</p>
+</div>
+</section>
+</section>
+<section id="documentation-with-sphinx">
+<h2>Documentation with Sphinx<a class="headerlink" href="#documentation-with-sphinx" title="Permalink to this headline">¶</a></h2>
+<p>Not only the implementation of the methods is important, but also the documentation with Sphinx.</p>
+<p>Mistakes in the documentation, like missing entries, typos in method names or parameter names lead to errors, that appear during the build process (best case) or later when the
+method is called.</p>
+<p>To generate the pybind11 code, we had to introduce some additional commands, which are suppressed by the extension file <code class="docutils literal notranslate"><span class="pre">pybind11.py</span></code>. This file implements those as empty commmands.</p>
+<p>The following text describes some special cases. Further information on ReStructuredText and Sphinx can be found here: <a class="reference external" href="https://www.sphinx-doc.org/">www.sphinx-doc.org</a>.</p>
+<section id="module-definitions-and-dependencies">
+<h3>Module definitions and dependencies<a class="headerlink" href="#module-definitions-and-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>In the module description the generated DLL must be referenced. The name of the DLL is always <code class="docutils literal notranslate"><span class="pre">_hm&lt;*project*&gt;X64.dll</span></code>, e,g. <code class="docutils literal notranslate"><span class="pre">_hmCoreX64.dll</span></code>. Der leading underscore is a naming convention
+of Python, <code class="docutils literal notranslate"><span class="pre">X64</span></code> is a naming convention within hyperMILL.</p>
+<p>The pybind11 files include these files.</p>
+<p>In the documentation must contain the following entry:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">module</span><span class="p">::</span> om.cam.core
+<span class="p">..</span> <span class="ow">import-dll</span><span class="p">::</span> _hmCoreX64
+</pre></div>
+</div>
+<p>The module name must be complete (mit <code class="docutils literal notranslate"><span class="pre">om.cam.</span></code>), the name uses always lower cases, in import-dll, the suffix <code class="docutils literal notranslate"><span class="pre">.dll</span></code>  must be omitted and camelCasing will be used in the name.</p>
+<p>For the forwarding and intellisense implementation a valid Python code will be generated, therefore all dependencies must be fulfilled. They can be imported by <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">import::</span></code>.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">module</span><span class="p">::</span> om.cam.ui
+<span class="p">..</span> <span class="ow">import-dll</span><span class="p">::</span> _hmUiX64
+<span class="p">..</span> <span class="ow">import</span><span class="p">::</span> om.cam.core (PyObject, PyProperty, PyPropertySet)
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">import::</span></code> exist two variants:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">import</span><span class="p">::</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span>
+</pre></div>
+</div>
+<p>This variant will be translated to</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+</pre></div>
+</div>
+<p>and the other variant</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">import</span><span class="p">::</span> om.cam.core (PyObject, PyProperty, PyPropertySet)
+</pre></div>
+</div>
+<p>will be translated to</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">PyObject</span><span class="p">,</span>
+        <span class="n">PyProperty</span><span class="p">,</span>
+        <span class="n">PyPropertySet</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The latter variants gives more controlled and should be preferred.</p>
+</section>
+</section>
+<section id="class-definitions">
+<h2>Class definitions<a class="headerlink" href="#class-definitions" title="Permalink to this headline">¶</a></h2>
+<section id="standard-classes">
+<h3>Standard classes<a class="headerlink" href="#standard-classes" title="Permalink to this headline">¶</a></h3>
+<section id="class-declarations">
+<h4>Class declarations<a class="headerlink" href="#class-declarations" title="Permalink to this headline">¶</a></h4>
+<p>Standard classes are all classes, which will be declared in C++ and Python the keyword <code class="docutils literal notranslate"><span class="pre">class</span></code>. For the right inheritance, the inherited classes have to be defined:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">class</span><span class="p">::</span> PyApplication(PyObject)
+</pre></div>
+</div>
+<p>The inheritance will be given in brackets. In this case <code class="docutils literal notranslate"><span class="pre">PyApplication</span></code> inherits all attributes from <code class="docutils literal notranslate"><span class="pre">PyObject</span></code>. The inheritance will be used in
+generated Python files and the pybind11 files.</p>
+<p>Remark: All Python classes should inherit from PyObject.</p>
+<p>Generally, the script assumes for the inheritance that the class names in C++ and Python are identical. (PyObject) will inherit in pybind11 from PyObject_.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">pyClsPyApplication</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pybind11</span><span class="o">::</span><span class="n">class_</span><span class="o">&lt;</span><span class="n">PyApplication</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject_</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pyApi</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PyApplication&quot;</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In special cases where the C++ class names and Python class names differ, one can use the keyword <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">pybind-inheritance::</span></code>.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">class</span><span class="p">::</span> PyObject
+
+<span class="p">        ..</span> <span class="ow">pybind-inheritance</span><span class="p">::</span> PyObject_
+
+        This is the base class of all hmPython objects. It provides some common functionality like getting the name, UUID or type information.
+</pre></div>
+</div>
+<p>In this case the C++ class is named PyObject_, because PyObject is already used CPython as the base class. The code snipped will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">pyClsPyObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pybind11</span><span class="o">::</span><span class="n">class_</span><span class="o">&lt;</span><span class="n">PyObject_</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pyApi</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PyObject&quot;</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here’s a more complex special case:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">class</span><span class="p">::</span> PyParameterDialog(PyObject)
+
+<span class="p">        ..</span> <span class="ow">pybind-inheritance</span><span class="p">::</span> PyParameterDialog&lt;PyParameterDescription&gt;
+</pre></div>
+</div>
+<p>is translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">pyClsPyParameterDialog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pybind11</span><span class="o">::</span><span class="n">class_</span><span class="o">&lt;</span><span class="n">PyParameterDialog</span><span class="o">&lt;</span><span class="n">PyParameterDescription</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject_</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pyApi</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PyParameterDialog&quot;</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">pybind-inheritance::</span></code> also C++ template-declarations can be done. <code class="docutils literal notranslate"><span class="pre">PyObject_</span></code> will be added automatically, when (PyObject) is given.</p>
+</section>
+<section id="method-declarations">
+<h4>Method declarations<a class="headerlink" href="#method-declarations" title="Permalink to this headline">¶</a></h4>
+<p>Python knows three kinds of methods: instance methods, static methods and class methods: These keywords are used for declaration</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">method</span><span class="p">::</span> myMethod(self, myArguments: list) -&gt; str
+
+<span class="p">..</span> <span class="ow">staticmethod</span><span class="p">::</span> myStaticMethod(myArguments: list) -&gt; str
+
+<span class="p">..</span> <span class="ow">classmethod</span><span class="p">::</span> myClassMethod(cls: object, myArguments: list) -&gt; str
+</pre></div>
+</div>
+<p>In the normal case, only instance methods are used, in rare cases static methods.
+After the method name an argument list and return value with type hint should be given. The type hint consists of the Python base types or declared classes (None, object, str, list, dict, PyAppliation, …)
+The type hint is an important information for the intellisense of a Python IDE.</p>
+<p>The auto-generation assumes for each Python method a C++ method with the same name</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">class</span><span class="p">::</span> PyPropertySet
+
+<span class="p">..</span> <span class="ow">method</span><span class="p">::</span> GetByIndex(self, index: int) -&gt; PyProperty
+
+        Returns the property at the given index or <span class="s">``None``</span>.
+
+        <span class="nc">:param int index:</span> Index of the property
+        <span class="nc">:return:</span> Property at the index position
+        <span class="nc">:rtype:</span> PyProperty
+</pre></div>
+</div>
+<p>will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pyClsPyPropertySet</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">&quot;GetByIndex&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">PyPropertySet</span><span class="o">::</span><span class="n">GetByIndex</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="s">&quot;index&quot;</span><span class="n">_a</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The arguments for the definitions are taken from the parameter list.</p>
+<p>The parameters are given in this format: <code class="docutils literal notranslate"><span class="pre">:param</span> <span class="pre">&lt;type&gt;</span> <span class="pre">&lt;name&gt;:</span> <span class="pre">&lt;docstring&gt;</span></code>. The type <code class="docutils literal notranslate"><span class="pre">&lt;typ&gt;</span></code> must be an already declared Python type.</p>
+<p><code class="docutils literal notranslate"><span class="pre">:return:</span> <span class="pre">&lt;docstring&gt;</span></code> set the documentation for the return value, <code class="docutils literal notranslate"><span class="pre">:rtype:</span></code> the type of the return value.</p>
+<p>Some special cases are described here:</p>
+<p><strong>Different method names</strong>:</p>
+<p>There are some cases, where the Python method name can’t be directly translated to C++ method name. This is mostly the case for the init method.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">method</span><span class="p">::</span> __init__()
+
+<span class="p">    ..</span> <span class="ow">pybind-method</span><span class="p">::</span> pybind11::init&lt;&gt;()
+
+<span class="p">..</span> <span class="ow">method</span><span class="p">::</span> __init__(theName: str, theDescriptions: list[PyParameterDescription], theUiName: str = &quot;&quot;)
+
+<span class="p">    ..</span> <span class="ow">pybind-method</span><span class="p">::</span> pybind11::init&lt;PyString, PyVec&lt;PyParameterDescription&gt;&amp;, PyString&gt;()
+</pre></div>
+</div>
+<p>will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pyClsPyParameterGroup</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">pybind11</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;&gt;</span><span class="p">()</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="n">pyClsPyParameterGroup</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">pybind11</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;</span><span class="n">PyString</span><span class="p">,</span><span class="w"> </span><span class="n">PyVec</span><span class="o">&lt;</span><span class="n">PyParameterDescription</span><span class="o">&gt;&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">PyString</span><span class="o">&gt;</span><span class="p">()</span><span class="w"></span>
+<span class="p">,</span><span class="w"> </span><span class="s">&quot;theName&quot;</span><span class="n">_a</span><span class="w"></span>
+<span class="p">,</span><span class="w"> </span><span class="s">&quot;theDescriptions&quot;</span><span class="n">_a</span><span class="w"></span>
+<span class="p">,</span><span class="w"> </span><span class="s">&quot;theUiName&quot;</span><span class="n">_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In pybind11 the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function must always use the pybind::init&lt;parameter_list&gt;().</p>
+<p>The same pattern works for all other function, here for overloading of functions.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">function</span><span class="p">::</span> PyCreateParameterDialog(title: str, description: PyParameterDescription) -&gt; PyObject
+
+<span class="p">..</span> <span class="ow">pybind-method</span><span class="p">::</span> pybind11::overload_cast&lt;const PyString&amp;, PyParameterDescription&amp;&gt;(&amp;PyCreateDialog)
+</pre></div>
+</div>
+<p>will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pyApi</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">&quot;PyCreateParameterDialog&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="n">pybind11</span><span class="o">::</span><span class="n">overload_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">PyString</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">PyParameterDescription</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyCreateDialog</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In this case the C++ function can’t be automatically determined by the compiler. It must be set by the developer by using a pybind11 cast.</p>
+<p><strong>Return of a reference</strong>:</p>
+<p>In really rare case, like in the function CreatePyApplication() a reference to a singleton will be returned. References can be indicated by
+the keyword <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">pybind-reftype::</span></code>.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">function</span><span class="p">::</span> CreatePyApplication() -&gt; PyApplication
+
+<span class="p">        ..</span> <span class="ow">pybind-reftype</span><span class="p">::</span> pybind11::return_value_policy::reference
+</pre></div>
+</div>
+<p>will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pyApi</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">&quot;CreatePyApplication&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CreatePyApplication</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="n">pybind11</span><span class="o">::</span><span class="n">return_value_policy</span><span class="o">::</span><span class="n">reference</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Default parameters</strong>:</p>
+<p>In the init example above <code class="docutils literal notranslate"><span class="pre">__init__(theName:</span> <span class="pre">str,</span> <span class="pre">theDescriptions:</span> <span class="pre">list[PyParameterDescription],</span> <span class="pre">theUiName:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&quot;&quot;)</span></code>
+a default parameter for <code class="docutils literal notranslate"><span class="pre">theUiName</span></code> will be used.</p>
+<p>Setting a default value can be done at the end of the parameter list with the command <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">pybind-default::</span> <span class="pre">&lt;parametername&gt;</span> <span class="pre">=</span> <span class="pre">&lt;parametervalue&gt;</span></code></p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">method</span><span class="p">::</span> __init__(theName: str, theDescriptions: list[PyParameterDescription], theUiName: str = &quot;&quot;)
+
+<span class="p">    ..</span> <span class="ow">pybind-method</span><span class="p">::</span> pybind11::init&lt;PyString, PyVec&lt;PyParameterDescription&gt;&amp;, PyString&gt;()
+
+    Initializes a PyParameterGroup with a list of PyParameterDescriptions and a PyString as name.
+
+    <span class="nc">:param str theName:</span> Name of the group that will be used in the UI.
+
+    <span class="nc">:param list[PyParameterDescription] theDescriptions:</span> List of PyParameterDescriptions.
+
+    <span class="nc">:param str theUiName:</span> Name that will be used in the UI
+
+<span class="p">    ..</span> <span class="ow">pybind-default</span><span class="p">::</span> theUiName = &quot;&quot;
+</pre></div>
+</div>
+<p>This will be translated to</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pyClsPyParameterGroup</span><span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">pybind11</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;</span><span class="n">PyString</span><span class="p">,</span><span class="w"> </span><span class="n">PyVec</span><span class="o">&lt;</span><span class="n">PyParameterDescription</span><span class="o">&gt;&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">PyString</span><span class="o">&gt;</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="s">&quot;theName&quot;</span><span class="n">_a</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="s">&quot;theDescriptions&quot;</span><span class="n">_a</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="s">&quot;theUiName&quot;</span><span class="n">_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Now an empty string is assigned to <code class="docutils literal notranslate"><span class="pre">theUiName</span></code>.</p>
+</section>
+</section>
+<section id="enumeration-classes">
+<h3>Enumeration classes<a class="headerlink" href="#enumeration-classes" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h4>Class declarations<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Enumeration types that are declared in C++ with <code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">class</span></code>, have to inherit from <code class="docutils literal notranslate"><span class="pre">enum.IntEnum</span></code> or <code class="docutils literal notranslate"><span class="pre">enum.IntFlag</span></code>. Additionally, pybind11 must known that this is an enumumeration.</p>
+</section>
+<section id="values">
+<h4>Values<a class="headerlink" href="#values" title="Permalink to this headline">¶</a></h4>
+<p>The enumration values must be given a CSV table. It’s assumed that the names of the values are the same in C++ and Python.
+In the documentation the <code class="docutils literal notranslate"><span class="pre">:header:</span></code> keyword must be given directly under <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">csv-table::</span></code>.</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">class</span><span class="p">::</span> PyAlertButton(enum.IntEnum)
+
+        Enumeration class for buttons in an alert message box. Used in <span class="na">:meth:</span><span class="nv">`PyApplication.ShowMessage`</span>.
+
+<span class="p">        ..</span> <span class="ow">csv-table</span><span class="p">::</span>
+                <span class="nc">:header:</span> &quot;Value&quot;, &quot;Description&quot;
+
+                &quot;NoButton&quot;, &quot;No button&quot;
+                &quot;Yes&quot;, &quot;Inserts a <span class="gs">**Yes**</span> button&quot;
+                &quot;No&quot;, &quot;Inserts a <span class="gs">**No**</span> button&quot;
+                &quot;Cancel&quot;, &quot;Inserts a <span class="gs">**Cancel**</span> button&quot;
+                &quot;Retry&quot;, &quot;Inserts a <span class="gs">**Retry**</span> button&quot;
+                &quot;Ok&quot;, &quot;Inserts an <span class="gs">**Ok**</span> button&quot;
+                &quot;Ignore&quot;, &quot;Inserts an <span class="gs">**Ignore**</span> button&quot;
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="debugging-with-visual-studio-code">
+<h2>Debugging with Visual Studio Code<a class="headerlink" href="#debugging-with-visual-studio-code" title="Permalink to this headline">¶</a></h2>
+<section id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>Debugging of Python code within the hyperMILL application is undoubted an expert thing. The debugging is done by the Debug Application
+Protocol (DAP) over TCP/IP connections. While this option is available in Visual Studio Code, it’s missing in Visual Studio Professional.</p>
+<p>For debugging the Python code must be started in hyperMILL and the same script must be load in VSCode in the editor.</p>
+<p>You can set breakpoints in VSCode at any point. You can watch any variable at the breakpoints and go stepwise through the code and jump
+into functions. This can be useful for large scripts.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Due to massive problems with debugging, this feature is not officially supported at the moment!
+The workflow below is written for the “old” Python dialog in hyperMILL. To enable the feature, the environment variable</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="n">USE_HMPYTHON</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>must be set.</p>
+</div>
+<img alt="hyperMILL Python dialog" src="_images/hypermill_dialog.png" />
+<p>While “Run” (green arrow button) starts the script immediately, “Debug” (X’ed bug) asks first to attach the debugger.</p>
+<img alt="Attach Python debugger" src="_images/hypermill_debug.png" />
+<p>By default, the socket <cite>localhost:5678</cite> is reserved for the Debug Adapter protocol. If more than one hyperMILL application is running,
+port number will increase.</p>
+<p><strong>Important</strong> After closing the socket, you have 15 s to connect VSCode. If no connection is the debugger is found, you’ll get a reminder
+to connect.</p>
+<p>The connection from VSCode must be setup at the first time. After clicking the Debugging symbol (Left panel: “Arrow on bug”),
+for the first a time a selection for the debugging method will be shown. Please select “Remote Attach” and <code class="docutils literal notranslate"><span class="pre">localhost</span></code> and then
+<code class="docutils literal notranslate"><span class="pre">5678</span></code> (shown in the hyperMILL dialog before).</p>
+<p>The configuration will be saved in <code class="docutils literal notranslate"><span class="pre">.vscode/launch.json</span></code>. You can copy also thise configuration below.</p>
+<div class="literal-block-wrapper docutils container" id="launch-json-example">
+<div class="code-block-caption"><span class="caption-text">Example of .vscode/launch.json</span><a class="headerlink" href="#launch-json-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+  // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+  // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+  // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+  &quot;version&quot;: &quot;0.2.0&quot;,
+  &quot;configurations&quot;: [
+    {
+      &quot;name&quot;: &quot;Python: Aktuelle Datei&quot;,
+      &quot;type&quot;: &quot;python&quot;,
+      &quot;request&quot;: &quot;launch&quot;,
+      &quot;program&quot;: &quot;${file}&quot;,
+      &quot;args&quot;: [],
+      &quot;console&quot;: &quot;integratedTerminal&quot;
+    },
+    {
+      &quot;name&quot;: &quot;HMC: Attach to 5678&quot;,
+      &quot;type&quot;: &quot;python&quot;,
+      &quot;request&quot;: &quot;attach&quot;,
+      &quot;connect&quot;: {
+        &quot;host&quot;: &quot;localhost&quot;,
+        &quot;port&quot;: 5678
+      },
+      &quot;pathMappings&quot;: [
+        {
+          &quot;localRoot&quot;: &quot;${fileDirname}&quot;,
+          &quot;remoteRoot&quot;: &quot;.&quot;
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;HMC: Attach to 5679&quot;,
+      &quot;type&quot;: &quot;python&quot;,
+      &quot;request&quot;: &quot;attach&quot;,
+      &quot;connect&quot;: {
+        &quot;host&quot;: &quot;localhost&quot;,
+        &quot;port&quot;: 5679
+      },
+      &quot;pathMappings&quot;: [
+        {
+          &quot;localRoot&quot;: &quot;${fileDirname}&quot;,
+          &quot;remoteRoot&quot;: &quot;.&quot;
+        }
+      ]
+    }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<p>A detailled description of <code class="docutils literal notranslate"><span class="pre">.vscode/launch.json</span></code> can be found here: <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging#_set-configuration-options">code.visualstudio.com/docs/python/debugging#_set-configuration-options</a>.
+See also <a class="reference external" href="https://code.visualstudio.com/docs/editor/variables-reference">code.visualstudio.com/docs/editor/variables-reference</a>.</p>
+<p>After attaching the debugger successfully, you will see a typical functionality of a debugger.</p>
+<img alt="Debugging a file" src="_images/vscode_debugging.png" />
+<p>On the left side, you can see the variables, watches and the callstack.</p>
+<p>Breakpoints can be added or removed by a double-click on the line numbers. At the top corner of the source code window, you can see some
+control elements. Don’t use restart. This will cause hyperMILL to crash.</p>
+<img alt="Debug elements: Don't use restart - This will lead to a crash of hyperMILL!" src="_images/vscode_debug_elements.png" />
+</section>
+</section>
+<section id="summary-from-repositories-to-deployment-path">
+<span id="ref-python-deployment"></span><h2>Summary: From repositories to deployment path<a class="headerlink" href="#summary-from-repositories-to-deployment-path" title="Permalink to this headline">¶</a></h2>
+<p>The deployment path is at the moment <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\OPEN</span> <span class="pre">MIND\Shared\&lt;version&gt;\python</span></code>.
+Python itself is an embedded deployment, this means it “lives” in the folder where it is installed. The advantage is, that one can install
+different versions side-by-side without interference.</p>
+<ul class="simple">
+<li><p>The base version of Python 3.9.4 has been installed once and copied to the Shared folder. <strong>There’s no step in the workflow that updates the Python version in the Shared folder</strong>.</p></li>
+<li><p>omUpdate will copy the HCS Python files from the HCS installation in the final Python library Path</p></li>
+<li><p>The repositories listed in <a class="reference internal" href="#ref-externals"><span class="std std-ref">Externals</span></a> are used only internally. They are not copied to the Shared folder.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hmPrePython.vcxproj</span></code> merges the build repository python-build into python and removes old debugpy-versions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hmSphinx.vcxproj</span></code> does a lot of things:
+* Read the documentation and create source code for Pybind11 and intellisense files. The intellisense <code class="docutils literal notranslate"><span class="pre">.pyi</span></code> are located in <code class="docutils literal notranslate"><span class="pre">build\packages\om\cam</span></code>. <strong>This folder will be copied later to Shared.</strong>
+* Generate a documentation in <code class="docutils literal notranslate"><span class="pre">build\html</span></code>.
+* Zip this documentation to <code class="docutils literal notranslate"><span class="pre">hmPython_html.zip</span></code>. <strong>This file will be copied later to Shared.</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hmCore.vcxproj</span></code> and <code class="docutils literal notranslate"><span class="pre">hmUi.vcxproj</span></code> generate the DLLs (PYDs) for the Python distribution. The resulting files will be copied to <code class="docutils literal notranslate"><span class="pre">build\packages\om\cam</span></code>.
+<strong>This folder will be copied later to Shared.</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hmPython.vcxproj</span></code> adds some structural Python files to <code class="docutils literal notranslate"><span class="pre">build\packages\om</span></code> and <strong>copies the folder ``om`` to ``SharedPythonLibom``</strong>. Also the full documentation
+will be copied to <code class="docutils literal notranslate"><span class="pre">Shared\Python\docs</span></code>.</p></li>
+</ul>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Once a file is added to the Shared path, it must be manually removed by an administrator!</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Developer documentation for Python</a><ul>
+<li><a class="reference internal" href="#externals">Externals</a></li>
+<li><a class="reference internal" href="#visual-studio-solutions-und-project-structures">Visual Studio solutions und project structures</a></li>
+<li><a class="reference internal" href="#typical-workflow">Typical workflow</a></li>
+<li><a class="reference internal" href="#build-environment">Build environment</a><ul>
+<li><a class="reference internal" href="#hmsphinx-artifacts">hmSphinx artifacts</a></li>
+<li><a class="reference internal" href="#hm-project-artifacts">hm&lt;<em>project</em>&gt; artifacts</a></li>
+<li><a class="reference internal" href="#hmpython-artifacts">hmPython artifacts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation-with-sphinx">Documentation with Sphinx</a><ul>
+<li><a class="reference internal" href="#module-definitions-and-dependencies">Module definitions and dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#class-definitions">Class definitions</a><ul>
+<li><a class="reference internal" href="#standard-classes">Standard classes</a><ul>
+<li><a class="reference internal" href="#class-declarations">Class declarations</a></li>
+<li><a class="reference internal" href="#method-declarations">Method declarations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#enumeration-classes">Enumeration classes</a><ul>
+<li><a class="reference internal" href="#id1">Class declarations</a></li>
+<li><a class="reference internal" href="#values">Values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-with-visual-studio-code">Debugging with Visual Studio Code</a><ul>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#summary-from-repositories-to-deployment-path">Summary: From repositories to deployment path</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developerdoc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer documentation for Python</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2020-2022, OPEN MIND Technologies AG.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

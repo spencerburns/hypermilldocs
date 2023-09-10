@@ -1,0 +1,70 @@
+Geom
+===========
+
+.. py:class:: Cell(TopoGeom)
+
+
+	.. py:method:: Bounds() -> List[Cell]
+
+		     Get the bounds of this object
+		    
+		     :return: The bounds
+		     :rtype: List[Cell]
+
+	.. py:method:: Stars(Root : Cell) -> List
+
+		     Get the stars (parents) of this object
+		    
+		     :param Root: the solid to which the cell belongs. If a null cell is provided,  
+		                  then the root solid is obtained from the entity, if any, default empty Cell
+		     :type Root: Cell, optional
+		     :return: The stars
+		     :rtype: List
+
+	.. py:method:: IsBound(Other : Cell) -> bool
+
+		     Say if a cell is a bound of this cell
+		    
+		     :param Other: The cell to be checked
+		     :type Other: Cell
+		     :return: True if Other is bound of this cell
+		     :rtype: bool
+
+	.. py:method:: IsStar(Other : Cell) -> bool
+
+		     Say if a cell is a star (parent) of this cell
+		    
+		     :param Other: The cell to be checked
+		     :type Other: Cell
+		     :return: True if Other is star of this cell
+		     :rtype: bool
+
+	.. py:property:: Error
+
+		[Readonly]
+		     The cell deviation (i.e. error, inaccuracy or tolerance)
+		    
+		     :type: float
+
+	.. py:property:: CumulativeError
+
+		[Readonly]
+		     The cell get the cumulative deviation (maximum of cell and children errors)
+		    
+		     :type: float
+
+	.. py:property:: Valid
+
+		[Readonly]
+		     True if no defect is detected on the cell or any of its subcells
+		    
+		     :type: bool
+
+	.. py:property:: Geometry
+
+		[Readonly]
+		     The geometric representation (Null for solids, surfaces for faces, 
+		     3d curves for edges, 3d points for vertexes)
+		     
+		     :type: Geom3d 
+

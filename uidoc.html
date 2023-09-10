@@ -1,0 +1,1133 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Module om.cam.ui &#8212; hmPython  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Module om.cam.core" href="coredoc.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="coredoc.html" title="Module om.cam.core"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-om.cam.ui"></span><section id="module-om-cam-ui">
+<h1>Module <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code><a class="headerlink" href="#module-om-cam-ui" title="Permalink to this headline">¶</a></h1>
+<section id="how-to-include">
+<h2>How to include<a class="headerlink" href="#how-to-include" title="Permalink to this headline">¶</a></h2>
+<p>To include ‘om.cam.ui’ your Python code, place these lines in your code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+</pre></div>
+</div>
+<p>om.cam.ui always needs the core module om.cam.core too!</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Here you find some simple examples showing how to generate a basic UI using the om.cam.ui module.</p>
+<ol class="arabic simple">
+<li><p>Single Parameter : Demonstrates how to query the user for a single parameter, e.g. a filename</p></li>
+<li><p>Parameter List : Shows how to query the user for a whole list of different values, each with a different type</p></li>
+<li><p>Parameter Group : Group parameters under a common name and create a UI for the group</p></li>
+<li><p>Parameter Group List : Create lists of parameter groups and create a UI for the list</p></li>
+<li><p>Enums : Shows how to use pre-defined enums in the UI or how to define enums in Python itself</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="single-value-example">
+<div class="code-block-caption"><span class="caption-text">Single Parameter</span><a class="headerlink" href="#single-value-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+
+    <span class="c1"># A single parameter of type &quot;String&quot; with the name &quot;File Name&quot; is defined</span>
+    <span class="n">fileNameParameter</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="s2">&quot;File Name&quot;</span><span class="p">)</span>
+    <span class="c1"># The current value for each parameter can be set using the &quot;SetValue&quot; function.</span>
+    <span class="n">fileNameParameter</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="s2">&quot;This could be your file name!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># A dialog is created to query for the single parameter.</span>
+    <span class="c1"># The title of the dialog will be &quot;Open File&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span> <span class="n">fileNameParameter</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dialogResult</span> <span class="o">==</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">):</span>
+        <span class="c1"># If the user accepted (pressed &quot;OK&quot;) and no error occured, the parameter description for the parameter given by the user</span>
+        <span class="c1"># can be queried using the name of the parameter:</span>
+        <span class="n">modifiedParameter</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">NameDictionary</span><span class="p">()[</span><span class="s2">&quot;File Name&quot;</span><span class="p">]</span>
+        <span class="c1"># Now you can access the actual value provided by the user:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">modifiedParameter</span><span class="o">.</span><span class="n">Value</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="parameter-list-example">
+<div class="code-block-caption"><span class="caption-text">Parameter List</span><a class="headerlink" href="#parameter-list-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Creating a list of ParameterDescriptions for different types</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pdl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescriptionList</span>
+
+    <span class="n">listName</span> <span class="o">=</span> <span class="s2">&quot;Parameter Type List&quot;</span>
+    <span class="n">parameterList</span> <span class="o">=</span> <span class="n">pdl</span><span class="p">(</span><span class="n">listName</span><span class="p">,</span> <span class="p">[</span><span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Bool</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int8</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="mi">99</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int16</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int64</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="mi">102</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt8</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="mi">103</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt16</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="mi">104</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt32</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="mi">105</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt64</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="mi">106</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float32</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="mi">107</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="mi">108</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s1">&#39;Alle meine Entchen&#39;</span><span class="p">)])</span>
+
+    <span class="n">dialogTitle</span> <span class="o">=</span> <span class="s2">&quot;Test : Parameter Types&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="n">dialogTitle</span><span class="p">,</span> <span class="n">parameterList</span><span class="p">)</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="parameter-group-example">
+<div class="code-block-caption"><span class="caption-text">Parameter Group</span><a class="headerlink" href="#parameter-group-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pg</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroup</span>
+
+    <span class="c1"># Defining three parameters, representing a 3-D coordinate</span>
+    <span class="n">pX</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">pY</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">pZ</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># The three coordinates are now combined into one group,</span>
+    <span class="c1"># the title of the group will be &quot;Origin&quot;.</span>
+    <span class="n">pOrigin</span> <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;Origin&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pX</span><span class="p">,</span> <span class="n">pY</span><span class="p">,</span> <span class="n">pZ</span><span class="p">])</span>
+    
+    <span class="c1"># A dialog is created to query the parameters in the group.</span>
+    <span class="c1"># The title of the dialog will be &quot;Set Origin&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Set Origin&quot;</span><span class="p">,</span> <span class="n">pOrigin</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="parameter-group-list-example">
+<div class="code-block-caption"><span class="caption-text">Parameter Group List</span><a class="headerlink" href="#parameter-group-list-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># This example shows how the user can create several parameter groups and combine them into a parameter group list.</span>
+    <span class="c1"># The group list is then used to create a dialog to query the values for the parameters.</span>
+    
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pdl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescriptionList</span>
+    <span class="n">pg</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroup</span>
+    <span class="n">pgl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroupList</span>
+
+    <span class="c1"># In this example two 3D coordinates should be queried: a start point and an end point</span>
+    <span class="c1"># First defining the coordinates for start and end point</span>
+    <span class="n">pStartX</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">pStartY</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="n">pStartZ</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="n">pEndX</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">pEndY</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="n">pEndZ</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Now creating groups for the start and and point</span>
+    <span class="n">pStart</span> <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pStartX</span><span class="p">,</span> <span class="n">pStartY</span><span class="p">,</span> <span class="n">pStartZ</span><span class="p">])</span>
+    <span class="n">pEnd</span>   <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;End&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pEndX</span><span class="p">,</span> <span class="n">pEndY</span><span class="p">,</span> <span class="n">pEndZ</span><span class="p">])</span>
+
+    <span class="c1"># Now creating the group list to be used</span>
+    <span class="n">pGroupList</span> <span class="o">=</span> <span class="n">pgl</span><span class="p">([</span><span class="n">pStart</span><span class="p">,</span> <span class="n">pEnd</span><span class="p">])</span>
+
+    <span class="c1"># A dialog is created to query the parameters in both groups.</span>
+    <span class="c1"># The title of the dialog will be &quot;Set Translation&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Set Translation&quot;</span><span class="p">,</span> <span class="n">pGroupList</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">dialogResult</span> <span class="o">==</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">):</span>
+        <span class="c1"># If the user accepted (pressed &quot;OK&quot;) and no error occured, the new values for origin can be queried.</span>
+        <span class="c1"># We can access each parameter description in a parameter group using the &quot;Descriptions&quot; function:</span>
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">pStart</span><span class="o">.</span><span class="n">Descriptions</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Value</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pEnd</span><span class="o">.</span><span class="n">Name</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">pEnd</span><span class="o">.</span><span class="n">Descriptions</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Value</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="parameter-enum-example">
+<div class="code-block-caption"><span class="caption-text">Using Enums</span><a class="headerlink" href="#parameter-enum-example" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># If you want to define your own enums in Python, use the &quot;enum&quot; module provided by the Python Standard Library</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pdl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescriptionList</span>
+
+    <span class="c1"># Custom Python Enums</span>
+    <span class="c1"># Here we define our own enum (simply some different kinds of animals) purely in Python, no corresponding enum exists in C++.</span>
+    <span class="c1"># For more details how to define enums in Python, please consult the documentation for the &quot;enum&quot; module in the Python Standard Library.</span>
+    <span class="n">Animal</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;Animal&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;CAT&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;DOG&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;DUCK&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ELEPHANT&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;PIG&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)])</span>
+    <span class="n">currentAnimal</span> <span class="o">=</span> <span class="n">Animal</span><span class="o">.</span><span class="n">DUCK</span>
+    <span class="c1"># To allow the user, to select a kind of animal, a parameter description of type &quot;Enum&quot; has to be created.</span>
+    <span class="n">parameterOne</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Enum</span><span class="p">,</span> <span class="s2">&quot;Some Animals&quot;</span><span class="p">,</span> <span class="n">currentAnimal</span><span class="p">)</span>
+
+    <span class="c1"># Predefined Enums</span>
+    <span class="c1"># If you want to use an enum that is already exposed in the Python API,  simply create a variable of this type,</span>
+    <span class="c1"># and then use it to create a PyParameterDescription with type &quot;enum&quot;.</span>
+    <span class="n">buttonValue</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Yes</span>
+    <span class="n">parameterTwo</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Enum</span><span class="p">,</span> <span class="s2">&quot;Button Value&quot;</span><span class="p">,</span> <span class="n">buttonValue</span><span class="p">)</span>
+    <span class="c1"># To allow the user to select both parameters, put them into a PyParameterDescriptionList</span>
+    <span class="n">parameterList</span> <span class="o">=</span> <span class="n">pdl</span><span class="p">([</span><span class="n">parameterOne</span><span class="p">,</span> <span class="n">parameterTwo</span><span class="p">])</span>
+
+    <span class="c1"># A dialog is created to query for the parameters create for the enums.</span>
+    <span class="c1"># The title of the dialog will be &quot;Using Enums&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Using Enums&quot;</span><span class="p">,</span> <span class="n">parameterList</span><span class="p">)</span>
+
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dialogResult</span> <span class="o">==</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selected animal is: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">parameterOne</span><span class="o">.</span><span class="n">Value</span><span class="p">()))</span>
+        <span class="c1"># print(&quot;Selected button value is: &quot; + str(parameterTwo.Value()))</span>
+
+
+</pre></div>
+</div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyDialogResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyDialogResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum.IntEnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyDialogResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Undefined</p></td>
+<td><p>TBD.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Accepted</p></td>
+<td><p>TBD.</p></td>
+</tr>
+<tr class="row-even"><td><p>Rejected</p></td>
+<td><p>TBD.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Error</p></td>
+<td><p>TBD.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum.IntEnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration of valid parameter types.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Undefined</p></td>
+<td><p>Undefined</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bool</p></td>
+<td><p>Bool</p></td>
+</tr>
+<tr class="row-even"><td><p>Int8</p></td>
+<td><p>Int8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Int16</p></td>
+<td><p>Int16</p></td>
+</tr>
+<tr class="row-even"><td><p>Int32</p></td>
+<td><p>Int32</p></td>
+</tr>
+<tr class="row-odd"><td><p>Int64</p></td>
+<td><p>Int64</p></td>
+</tr>
+<tr class="row-even"><td><p>UInt8</p></td>
+<td><p>UInt8</p></td>
+</tr>
+<tr class="row-odd"><td><p>UInt16</p></td>
+<td><p>UInt16</p></td>
+</tr>
+<tr class="row-even"><td><p>UInt32</p></td>
+<td><p>UInt32</p></td>
+</tr>
+<tr class="row-odd"><td><p>UInt64</p></td>
+<td><p>UInt64</p></td>
+</tr>
+<tr class="row-even"><td><p>Float32</p></td>
+<td><p>Float32</p></td>
+</tr>
+<tr class="row-odd"><td><p>Float64</p></td>
+<td><p>Float64</p></td>
+</tr>
+<tr class="row-even"><td><p>String</p></td>
+<td><p>String</p></td>
+</tr>
+<tr class="row-odd"><td><p>HMProperty</p></td>
+<td><p>HMProperty</p></td>
+</tr>
+<tr class="row-even"><td><p>Enum</p></td>
+<td><p>Enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PyObject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PyParameterDescription contains the information necessary to query or display a parameter in a UI, like its name, type, default value, tooltip and so on.
+To change a single parameter using a PyParameterDescription use a PyParameterDialog or the PyCreateParameterDialog function with a PyParameterDescription as argument.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an empty PyParameterDescription.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><span class="pre">PyParameterType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterDescription with a type and a name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theType</strong> (<a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><em>PyParameterType</em></a>) – The type of the parameter.</p></li>
+<li><p><strong>theName</strong> (<em>str</em>) – The name of the parameter as shown to the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><span class="pre">PyParameterType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDefault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes an PyParameterDescription with a type, a name and a default value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theType</strong> (<a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><em>PyParameterType</em></a>) – The type of the parameter.</p></li>
+<li><p><strong>theName</strong> (<em>str</em>) – The name of the parameter as shown to the user.</p></li>
+<li><p><strong>theDefault</strong> (<em>object</em>) – The default value of the parameter. Value has to be convertible to an object of the PyParameterType defined for the PyParameterDescription.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><span class="pre">PyParameterType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theUiName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDefault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes an PyParameterDescription with a type, a name and a default value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theType</strong> (<a class="reference internal" href="#om.cam.ui.PyParameterType" title="om.cam.ui.PyParameterType"><em>PyParameterType</em></a>) – The type of the parameter.</p></li>
+<li><p><strong>theName</strong> (<em>str</em>) – The identify (property name) used internally.</p></li>
+<li><p><strong>theUiName</strong> (<em>str</em>) – The visible name of the parameter as shown to the user.</p></li>
+<li><p><strong>theDefault</strong> (<em>object</em>) – The default value of the parameter. Value has to be convertible to an object of the PyParameterType defined for the PyParameterDescription.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theProperty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="coredoc.html#om.cam.core.PyProperty" title="om.cam.core.PyProperty"><span class="pre">PyProperty</span></a></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterDescription with a PyProperty.
+Actual type, name and default value used in the UI are defined by the PyProperty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theProperty</strong> (<a class="reference internal" href="coredoc.html#om.cam.core.PyProperty" title="om.cam.core.PyProperty"><em>PyProperty</em></a>) – Property to be used for the PyParameterDescription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identify (property name) of the PyParameterDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The identify (property name) of the PyParameterDescription</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.SetName">
+<span class="sig-name descname"><span class="pre">SetName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.SetName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the identify (property name) of the PyParameterDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theName</strong> (<em>str</em>) – Identify (property Name) that is used internally.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.UIName">
+<span class="sig-name descname"><span class="pre">UIName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.UIName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (user visible) name of the PyParameterDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the parameter visible in the UI</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.SetUIName">
+<span class="sig-name descname"><span class="pre">SetUIName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.SetUIName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the (user visible) name of the PyParameterDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theName</strong> (<em>str</em>) – Name that is used for the parameter when displaying it in the UI.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.Value">
+<span class="sig-name descname"><span class="pre">Value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current value of the parameter as PyObject. Actual type depends on the PyParameterType of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current value of the parameter</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject">PyObject</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.SetValue">
+<span class="sig-name descname"><span class="pre">SetValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theValue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current value of the PyParameterDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theValue</strong> (<a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><em>PyObject</em></a>) – New value for the parameter. Value has to be convertible to the PyParameterType of the parameter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.NameDictionary">
+<span class="sig-name descname"><span class="pre">NameDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.NameDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the name(s) of the parameters to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping name(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.UUIDDictionary">
+<span class="sig-name descname"><span class="pre">UUIDDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.UUIDDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the UUID(s) of the parameters to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping UUID(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescription.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescription.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the debug information for the PyParameterDescription object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Debug information of the object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterDescriptionList</span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PyParameterDescriptionList is an ordered list of PyParameterDescriptions.
+To change the parameters in a PyParameterDescriptionList,  use a PyParameterListDialog or the PyCreateParameterDialog function with a PyParameterDescriptionList as argument.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an empty PyParameterDescriptionList.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDescriptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theUiName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterDescriptionList with a list of PyParameterDescriptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theDescriptions</strong> (<em>list</em><em>[</em><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><em>PyParameterDescription</em></a><em>]</em>) – List of PyParameterDescriptions.</p></li>
+<li><p><strong>theUiName</strong> (<em>str</em>) – The name that is shown on the UI</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDescriptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theUiName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterDescriptionList with a list of PyParameterDescriptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theName</strong> (<em>str</em>) – Name of the list.</p></li>
+<li><p><strong>theDescriptions</strong> (<em>list</em><em>[</em><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><em>PyParameterDescription</em></a><em>]</em>) – List of PyParameterDescriptions.</p></li>
+<li><p><strong>theUiName</strong> (<em>str</em>) – UI name of the list.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theProperties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="coredoc.html#om.cam.core.PyPropertySet" title="om.cam.core.PyPropertySet"><span class="pre">PyPropertySet</span></a></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterDescriptionList with a set of PyProperties.
+For each property in the set a PyParameterDescription will be created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theProperties</strong> (<a class="reference internal" href="coredoc.html#om.cam.core.PyPropertySet" title="om.cam.core.PyPropertySet"><em>PyPropertySet</em></a>) – A set of PyProperties used to initialize the PyParameterDescriptions in the list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (user visible) name of the PyParameterDescriptionList.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the list</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.SetName">
+<span class="sig-name descname"><span class="pre">SetName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.SetName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the PyParameterDescriptionList.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theName</strong> (<em>str</em>) – Name that is used for the list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.Descriptions">
+<span class="sig-name descname"><span class="pre">Descriptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.Descriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PyParameterDescriptions in the PyParameterDescriptionList as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of ParameterDescriptions in the list.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.NameDictionary">
+<span class="sig-name descname"><span class="pre">NameDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.NameDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the name(s) of all parameters in the list to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping name(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.UUIDDictionary">
+<span class="sig-name descname"><span class="pre">UUIDDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.UUIDDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the UUID(s) of all parameters in the list to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping UUID(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDescriptionList.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDescriptionList.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the debug information for the PyParameterDescriptionList object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Debug information of the object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterGroup</span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PyParameterGroup contains a list of parameters that are used together under a common name, e.g. the “Red”, “Green” and “Blue” components of a color.
+To change the parameters in a PyParameterGroup,  use a PyParameterGroupDialog or the PyCreateParameterDialog function with a PyParameterGroup as argument.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an empty PyParameterGroup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDescriptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theUiName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterGroup with a list of PyParameterDescriptions and a PyString as name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theName</strong> (<em>str</em>) – Name of the group that will be used in the UI.</p></li>
+<li><p><strong>theDescriptions</strong> (<em>list</em><em>[</em><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><em>PyParameterDescription</em></a><em>]</em>) – List of PyParameterDescriptions.</p></li>
+<li><p><strong>theUiName</strong> (<em>str</em>) – Name that will be used in the UI</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theDescriptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterDescriptionList" title="om.cam.ui.PyParameterDescriptionList"><span class="pre">PyParameterDescriptionList</span></a></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterGroup with a PyParameterDesriptionList and a PyString as name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theName</strong> (<em>str</em>) – Name of the group that will be used in the UI.</p></li>
+<li><p><strong>theDescriptions</strong> (<a class="reference internal" href="#om.cam.ui.PyParameterDescriptionList" title="om.cam.ui.PyParameterDescriptionList"><em>PyParameterDescriptionList</em></a>) – A PyParameterDescriptionList defining the parameters in the group.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theProperties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="coredoc.html#om.cam.core.PyPropertySet" title="om.cam.core.PyPropertySet"><span class="pre">PyPropertySet</span></a></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterGroup with a set of PyProperties and a PyString as name.
+For each property in the set a PyParameterDescription will be created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theName</strong> (<em>str</em>) – Name of the group that will be used in the UI.</p></li>
+<li><p><strong>theProperties</strong> (<a class="reference internal" href="coredoc.html#om.cam.core.PyPropertySet" title="om.cam.core.PyPropertySet"><em>PyPropertySet</em></a>) – A set of PyProperties used to initialize the PyParameterDescriptions in the group.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (user visible) name of the PyParameterGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the group</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.Descriptions">
+<span class="sig-name descname"><span class="pre">Descriptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.Descriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PyParameterDescriptions in the PyParameterGroup as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of ParameterDescriptions in the group.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription">PyParameterDescription</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.NameDictionary">
+<span class="sig-name descname"><span class="pre">NameDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.NameDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the name(s) of all parameters in the group to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping name(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.UUIDDictionary">
+<span class="sig-name descname"><span class="pre">UUIDDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.UUIDDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the UUID(s) of all parameters in the group to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping UUID(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the debug information for the PyParameterGroup object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Debug information of the object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterGroupList</span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupList" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PyParameterGroupList contains an ordered list of PyParameterGroups.
+It should be used as a container for PyParameterGroups that will be displayed in one UI element.
+To create an UI for a PyParameterGroupList,  use a PyParameterGroupListDialog or the PyCreateParameterDialog function with a PyParameterGroup as argument.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupList.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterGroupList.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an empty PyParameterGroupList.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theGroups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#om.cam.ui.PyParameterGroup" title="om.cam.ui.PyParameterGroup"><span class="pre">PyParameterGroup</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Initializes a PyParameterGroupList with a list of PyParameterGroups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theGroups</strong> (<em>list</em><em>[</em><a class="reference internal" href="#om.cam.ui.PyParameterGroup" title="om.cam.ui.PyParameterGroup"><em>PyParameterGroup</em></a><em>]</em>) – List of PyParameterGroups.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupList.Descriptions">
+<span class="sig-name descname"><span class="pre">Descriptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupList.Descriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PyParameterDescriptions in the PyParameterGroupList as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of ParameterDescriptions in the groups.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription">PyParameterDescription</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupList.NameDictionary">
+<span class="sig-name descname"><span class="pre">NameDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupList.NameDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the name(s) of all parameters in the groups to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping name(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupList.UUIDDictionary">
+<span class="sig-name descname"><span class="pre">UUIDDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupList.UUIDDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the UUID(s) of all parameters in the groups to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping UUID(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterTree</span></span><a class="headerlink" href="#om.cam.ui.PyParameterTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterDialog</span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyDialogResult" title="om.cam.ui.PyDialogResult"><span class="pre">PyDialogResult</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.Show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.NameDictionary">
+<span class="sig-name descname"><span class="pre">NameDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.NameDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the name(s) of all parameters in the groups to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping name(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.UUIDDictionary">
+<span class="sig-name descname"><span class="pre">UUIDDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.UUIDDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary mapping the UUID(s) of all parameters in the groups to the actual parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary mapping UUID(s) of parameters to actual parameters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.Title">
+<span class="sig-name descname"><span class="pre">Title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.Title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.SetTitle">
+<span class="sig-name descname"><span class="pre">SetTitle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.SetTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterDialog.ParameterType">
+<span class="sig-name descname"><span class="pre">ParameterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#om.cam.ui.PyParameterDialog.ParameterType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterListDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterListDialog</span></span><a class="headerlink" href="#om.cam.ui.PyParameterListDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterListDialog.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyDialogResult" title="om.cam.ui.PyDialogResult"><span class="pre">PyDialogResult</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterListDialog.Show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterGroupDialog</span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupDialog.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyDialogResult" title="om.cam.ui.PyDialogResult"><span class="pre">PyDialogResult</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupDialog.Show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupListDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterGroupListDialog</span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupListDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterGroupListDialog.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyDialogResult" title="om.cam.ui.PyDialogResult"><span class="pre">PyDialogResult</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterGroupListDialog.Show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterTreeDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyParameterTreeDialog</span></span><a class="headerlink" href="#om.cam.ui.PyParameterTreeDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>TBD.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="om.cam.ui.PyParameterTreeDialog.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyDialogResult" title="om.cam.ui.PyDialogResult"><span class="pre">PyDialogResult</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyParameterTreeDialog.Show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="om.cam.ui.PyCreateParameterDialog">
+<span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyCreateParameterDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><span class="pre">PyParameterDescription</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#om.cam.ui.PyParameterDialog" title="om.cam.ui.PyParameterDialog"><span class="pre">PyParameterDialog</span></a></span></span><a class="headerlink" href="#om.cam.ui.PyCreateParameterDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a parameter dialog for the given parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Title of the dialog</p></li>
+<li><p><strong>description</strong> (<a class="reference internal" href="#om.cam.ui.PyParameterDescription" title="om.cam.ui.PyParameterDescription"><em>PyParameterDescription</em></a>) – Description of the parameter:</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the parameter dialog</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#om.cam.ui.PyParameterDialog" title="om.cam.ui.PyParameterDialog">PyParameterDialog</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyCreateParameterDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterDescriptionList" title="om.cam.ui.PyParameterDescriptionList"><span class="pre">PyParameterDescriptionList</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></span></dt>
+<dd><p>TBD.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyCreateParameterDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterGroup" title="om.cam.ui.PyParameterGroup"><span class="pre">PyParameterGroup</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></span></dt>
+<dd><p>TBD.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyCreateParameterDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterGroupList" title="om.cam.ui.PyParameterGroupList"><span class="pre">PyParameterGroupList</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></span></dt>
+<dd><p>TBD.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">om.cam.ui.</span></span><span class="sig-name descname"><span class="pre">PyCreateParameterDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#om.cam.ui.PyParameterTree" title="om.cam.ui.PyParameterTree"><span class="pre">PyParameterTree</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="coredoc.html#om.cam.core.PyObject" title="om.cam.core.PyObject"><span class="pre">PyObject</span></a></span></span></dt>
+<dd><p>TBD.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code></a><ul>
+<li><a class="reference internal" href="#how-to-include">How to include</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="coredoc.html"
+                          title="previous chapter">Module <code class="docutils literal notranslate"><span class="pre">om.cam.core</span></code></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="examples.html"
+                          title="next chapter">Examples</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/uidoc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="coredoc.html" title="Module om.cam.core"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2020-2022, OPEN MIND Technologies AG.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

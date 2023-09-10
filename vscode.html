@@ -1,0 +1,203 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Working with Visual Studio Code &#8212; hmPython  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="prev" title="Examples" href="examples.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with Visual Studio Code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="working-with-visual-studio-code">
+<h1>Working with Visual Studio Code<a class="headerlink" href="#working-with-visual-studio-code" title="Permalink to this headline">¶</a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>hyperMILL Python is optimized to work with Microsoft Visual Studio Code (<a class="reference external" href="https://code.visualstudio.com/Download">code.visualstudio.com/Download</a>).</p>
+<p>Visual Studio Code (aka VSCode) exists also as a portable solution that does not need any installation.
+More about portable VSCode is here: <a class="reference external" href="https://code.visualstudio.com/docs/editor/portable">code.visualstudio.com/docs/editor/portable</a></p>
+<img alt="First start of Visual Studio Code." src="_images/vscode_first_start.png" />
+<p>VSCode works in directory structure, all settings and extensions are created below the main directory. This is very convenient, if you
+are working with different projects. All configuration settings are saved in a folder <code class="docutils literal notranslate"><span class="pre">.vscode</span></code>.</p>
+<p>After the first start of VSCode, the user will be guided through a optional wizard. For example, the user can install an optional language pack.</p>
+<img alt="Open folder" src="_images/vscode_open_folder.png" />
+<p>Open first the folder that is containing the project (&lt;Ctrl&gt;+&lt;K&gt;, &lt;Ctrl&gt;+&lt;O&gt;). Remark: For debugging it seems to be substantially that you
+open the folder, where the source code is located.</p>
+<p>Now you can create a new Python file or select an existing Python file. VSCode recognizes the file format (bottom-right corner shows Python)
+and wants to install a necessary extensions.</p>
+<img alt="Installed extensions" src="_images/vscode_extensions.png" />
+<p>If you have opened an existing file, you will see a lot of errors in the source code. VSCode can switch between different Python installations,
+and it is likely that the wrong installations is chosen.</p>
+<img alt="Wrong Python interpreter chosen" src="_images/vscode_wrong_python.png" />
+<p>To use the full intellisense support, one has to use the right interpreter installation. The selection is done by the command key shortcut
+&lt;Ctrl&gt;+&lt;Shift&gt;+&lt;P&gt;. Now you get into the VSCode command window, where you have to search for “Python: Select interpreter” or
+“Python: Interpreter auswählen”.</p>
+<img alt="Installed Python interpreters" src="_images/vscode_interpreter_path.png" />
+<p>VSCode suggests a list of found Python interpreters. The hyperMILL Python interpreter can be normally found here:
+<strong>C:\Program Files\OPEN MIND\Shared\&lt;Version&gt;\python\python.exe</strong>. If the interpreter is not shown, you can add it manually with
+“+ Enter interpreter path…”.</p>
+<p><strong>Selecting a wrong interpreter is a common source of errors</strong>! We are using Embedded Python, all information are stored in one
+directory. This ensure that we can deliver an own Python for each hyperMILL version.</p>
+</section>
+<section id="intellisense">
+<h2>Intellisense<a class="headerlink" href="#intellisense" title="Permalink to this headline">¶</a></h2>
+<p>hyperMILL Python has an integrated help and support for intellisense.</p>
+<p>To run a script in hyperMill python, one has to call <code class="docutils literal notranslate"><span class="pre">python.exe</span></code> directly in the hyperMILL Python directory. At this point, only the
+help system should be demonstrated briefly. Call <code class="docutils literal notranslate"><span class="pre">python.exe</span></code> in the command line and run the following commands in the Python interpreter.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="p">)</span>
+<span class="n">help</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">)</span>
+<span class="n">help</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">PyJoblistSet</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Python help from command line." src="_images/terminal_help_pyjoblistset.png" />
+<p>In Visual Studio Code these information is used to provide a detailled intellisense.</p>
+<img alt="Intellisense" src="_images/vscode_intellisense.png" />
+<p>The intellisense works for all elements like classes, methods, enumerations, …</p>
+<p>If the return value is not recognized and no or insufficient intellisense is provided, try this workaround.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">PyApplication</span><span class="p">()</span>
+
+<span class="c1"># In early versions the ``om.cam.core.PyDocument`` wasn&#39;t recognized</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+
+<span class="c1"># If you manually provide a return type, the intellisense works again. This maybe also necessary if the return type is unspecific.</span>
+<span class="n">doc</span> <span class="p">:</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">PyDocument</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="starting-a-python-script-in-hypermill">
+<h2>Starting a Python script in hyperMILL<a class="headerlink" href="#starting-a-python-script-in-hypermill" title="Permalink to this headline">¶</a></h2>
+<p>The script can be run in hyperMILL only after loading a document. The function is available in the “Jobs” tab of the hyperMILL browser in
+the extended context menu (&lt;Ctrl&gt;+&lt;Right mousebutton&gt;).</p>
+<img alt="Extended context menu" src="_images/hypermill_contextmenu.png" />
+<p>The last menu item “Run Python Script…” opens the dialog.</p>
+<img alt="hyperMILL Python dialog" src="_images/hypermill_dialog.png" />
+<p>By clicking “Browse” or by directly entering the file name, you can select the Python script. If the script needs additional arguments,
+they can be entered in the “Arguments” field.</p>
+<p>Both, filename and arguments are saved in a history, that is saved after closing the application.</p>
+<p>The button “Run” starts the script, while “Debug” enters the debugging mode.</p>
+<p>Error messages are shown in the text field: Interpreter errors in the script are shown like in the examples. The UI is blocked
+during execution of the script.</p>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>The software packages, like pybind11 and th Debug Adapter Protocol are open source projects, that do not meet all of our
+requirements. Especially the execution and debugging of scripts within the application is not a common use case.</p>
+<p>At the moment, we still have some problems establishing the connection between hyperMILL and VSCode. The main reason is that by an crash
+a socket is not close properly.</p>
+<p>The name resolution of the script file seems to fail, if the source code is not directly in the working folder of VSCode. This causes
+that breakpoints are not found and also that hyperMILL will hang up, if the script is called twice.</p>
+<p>Best workaround: Don’t debug. Write all variables to the (hyperMILL) console or in a file. Code can be changed very fast in VSCode and
+restarted by “Run” in hyperMILL. This is in many cases faster than attaching a debugger.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Working with Visual Studio Code</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#intellisense">Intellisense</a></li>
+<li><a class="reference internal" href="#starting-a-python-script-in-hypermill">Starting a Python script in hyperMILL</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="examples.html"
+                          title="previous chapter">Examples</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/vscode.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with Visual Studio Code</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2020-2022, OPEN MIND Technologies AG.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

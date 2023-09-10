@@ -1,0 +1,62 @@
+.. default-domain:: py
+.. highlight:: python
+
+========
+Examples
+========
+   
+Examples for ``om.cam.core``
+==============================
+
+.. literalinclude:: basic_example.py
+    :caption: Basic example how to include om.cam.core
+
+.. literalinclude:: count_toolchanges.py
+    :caption: Reads the tool of each job and counts the tool changes
+
+.. literalinclude:: count_toolchanges2.py
+    :caption: Counts the tool changes before and after an optimization
+
+.. literalinclude:: create_compoundjob.py
+    :caption: A more sophisticated example with UI creating jobs, translating and moving around
+
+.. literalinclude:: enum_operations.py
+    :caption: Some enum operations
+
+.. literalinclude:: iterate_collection.py
+    :caption: Basic example how to iterate through a collection like PyJoblistCollection of PyJobCollection
+
+.. literalinclude:: list_cycle_stat.py
+    :caption: Example to start hyperMILL and run a script from command-line
+
+.. literalinclude:: messageboxes.py
+    :caption: Example that demonstrates how to display and write messages
+
+.. literalinclude:: property_example.py
+    :caption: Example for using property sets and properties
+
+.. literalinclude:: redirect_example.py
+    :caption: Example: Redirecting stdout and stderr in with hmPython
+
+.. literalinclude:: resmgr_example.py
+    :caption: Example of using the PyResourceMgr class
+
+.. literalinclude:: test_dump_trees.py
+    :caption: Detailled example of how to dump a job browser tree
+
+
+Examples for ``om.cam.ui``
+============================
+
+.. literalinclude:: single_parameter_example.py
+    :caption: Single Parameter
+
+.. literalinclude:: parameter_list_example.py
+    :caption: Parameter List 
+
+.. literalinclude:: parameter_group_example.py
+    :caption: Parameter Group
+
+.. literalinclude:: parameter_group_list_example.py
+    :caption: Parameter Group List
+

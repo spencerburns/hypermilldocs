@@ -1,0 +1,552 @@
+.. default-domain:: py
+
+.. module:: om.cam.ui
+    :platform: Windows 7 (x64), Windows 10 (x64), Windows 11 (x64)
+    :synopsis: Implementation of OPEN MIND \ *hyper*\ MILL UI classes
+
+.. import-dll:: _hmUiX64
+.. import:: om.cam.core  (PyObject, PyProperty, PyPropertySet)
+
+======================
+Module ``om.cam.ui``
+======================
+
+How to include
+==============
+
+To include 'om.cam.ui' your Python code, place these lines in your code.
+
+.. code-block:: 
+
+    import om.cam.core
+    import om.cam.ui
+
+om.cam.ui always needs the core module om.cam.core too!
+
+Examples
+========
+
+Here you find some simple examples showing how to generate a basic UI using the om.cam.ui module.
+
+#. Single Parameter : Demonstrates how to query the user for a single parameter, e.g. a filename
+
+#. Parameter List : Shows how to query the user for a whole list of different values, each with a different type
+
+#. Parameter Group : Group parameters under a common name and create a UI for the group
+
+#. Parameter Group List : Create lists of parameter groups and create a UI for the list
+
+#. Enums : Shows how to use pre-defined enums in the UI or how to define enums in Python itself
+
+.. literalinclude:: single_parameter_example.py
+    :caption: Single Parameter
+    :name: single_value_example
+
+.. literalinclude:: parameter_list_example.py
+    :caption: Parameter List 
+    :name: parameter_list_example
+
+.. literalinclude:: parameter_group_example.py
+    :caption: Parameter Group
+    :name: parameter_group_example
+
+.. literalinclude:: parameter_group_list_example.py
+    :caption: Parameter Group List
+    :name: parameter_group_list_example
+
+.. literalinclude:: parameter_enum_example.py
+    :caption: Using Enums
+    :name: parameter_enum_example
+
+
+.. class:: PyDialogResult(enum.IntEnum)
+
+    TBD.
+
+    .. csv-table::
+        :header: "Value", "Description"
+
+        "Undefined", "TBD."
+        "Accepted", "TBD."
+        "Rejected", "TBD."
+        "Error", "TBD."
+
+.. class:: PyParameterType(enum.IntEnum)
+
+    Enumeration of valid parameter types.
+
+    .. csv-table::
+        :header: "Value", "Description"
+       
+        "Undefined", "Undefined"
+        "Bool", "Bool"
+        "Int8", "Int8"
+        "Int16", "Int16"
+        "Int32", "Int32"
+        "Int64", "Int64"
+        "UInt8", "UInt8"
+        "UInt16", "UInt16"
+        "UInt32", "UInt32"
+        "UInt64", "UInt64"
+        "Float32", "Float32"
+        "Float64", "Float64"
+        "String", "String"
+        "HMProperty", "HMProperty"
+        "Enum", "Enum"
+
+
+.. class:: PyParameterDescription(PyObject)
+
+    A PyParameterDescription contains the information necessary to query or display a parameter in a UI, like its name, type, default value, tooltip and so on.
+    To change a single parameter using a PyParameterDescription use a PyParameterDialog or the PyCreateParameterDialog function with a PyParameterDescription as argument.
+
+    .. method:: __init__(self: object)
+        
+        .. pybind-method:: pybind11::init<>()
+
+        Initializes an empty PyParameterDescription.
+
+
+    .. method:: __init__(self: object, theType: PyParameterType, theName: str)
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyParameterType, PyString>()
+
+        Initializes a PyParameterDescription with a type and a name.
+
+        :param PyParameterType theType: The type of the parameter. 
+        :param str theName: The name of the parameter as shown to the user.
+
+
+    .. method:: __init__(self: object, theType: PyParameterType, theName: str, theDefault: object)
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyParameterType, PyString, pybind11::object>()
+
+        Initializes an PyParameterDescription with a type, a name and a default value.	
+ 
+        :param PyParameterType theType: The type of the parameter. 
+        :param str theName: The name of the parameter as shown to the user.
+        :param object theDefault: The default value of the parameter. Value has to be convertible to an object of the PyParameterType defined for the PyParameterDescription.
+
+    .. method:: __init__(self: object, theType: PyParameterType, theName: str, theUiName: str, theDefault: object)
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyParameterType, PyString, PyString, pybind11::object>()
+
+        Initializes an PyParameterDescription with a type, a name and a default value.	
+ 
+        :param PyParameterType theType: The type of the parameter. 
+        :param str theName: The identify (property name) used internally.
+        :param str theUiName: The visible name of the parameter as shown to the user.
+        :param object theDefault: The default value of the parameter. Value has to be convertible to an object of the PyParameterType defined for the PyParameterDescription.
+
+    .. method:: __init__(self: object, theProperty: PyProperty)        
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyProperty>()
+        
+        Initializes a PyParameterDescription with a PyProperty.
+        Actual type, name and default value used in the UI are defined by the PyProperty.
+
+        :param PyProperty theProperty: Property to be used for the PyParameterDescription. 
+
+
+    .. method:: Name(self: object) -> str
+
+        Returns the identify (property name) of the PyParameterDescription.
+
+        :return: The identify (property name) of the PyParameterDescription
+        :rtype: str
+
+    .. method:: SetName(self: object, theName: str)
+
+        Sets the identify (property name) of the PyParameterDescription.
+
+        :param str theName: Identify (property Name) that is used internally.
+
+    .. method:: UIName(self: object) -> str
+
+        Returns the (user visible) name of the PyParameterDescription.
+
+        :return: The name of the parameter visible in the UI
+        :rtype: str
+
+    .. method:: SetUIName(self: object, theName: str)
+
+        Sets the (user visible) name of the PyParameterDescription.
+
+        :param str theName: Name that is used for the parameter when displaying it in the UI.
+
+    .. method:: Value(self: object) -> PyObject
+
+        Returns the current value of the parameter as PyObject. Actual type depends on the PyParameterType of the object.
+
+        :return: Current value of the parameter
+        :rtype: PyObject
+
+
+    .. method:: SetValue(self: object, theValue: PyObject)
+
+        Sets the current value of the PyParameterDescription.
+
+        :param PyObject theValue: New value for the parameter. Value has to be convertible to the PyParameterType of the parameter.
+
+    .. method:: NameDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the name(s) of the parameters to the actual parameters.
+
+        :return: Dictionary mapping name(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: UUIDDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the UUID(s) of the parameters to the actual parameters.
+
+        :return: Dictionary mapping UUID(s) of parameters to actual parameters.
+        :rtype: dict
+
+
+    .. method:: __repr__(self: object) -> str
+
+        .. pybind-method:: repr
+
+        Returns the debug information for the PyParameterDescription object.
+
+        :return: Debug information of the object
+        :rtype: str
+
+
+.. class:: PyParameterDescriptionList
+
+    A PyParameterDescriptionList is an ordered list of PyParameterDescriptions.
+    To change the parameters in a PyParameterDescriptionList,  use a PyParameterListDialog or the PyCreateParameterDialog function with a PyParameterDescriptionList as argument.
+
+    .. method:: __init__(self: object)
+
+        .. pybind-method:: pybind11::init<>()
+
+        Initializes an empty PyParameterDescriptionList.
+
+    .. method:: __init__(self: object, theDescriptions: list[PyParameterDescription], theUiName: str = "")
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyVec<PyParameterDescription>&, PyString>()
+        
+        Initializes a PyParameterDescriptionList with a list of PyParameterDescriptions.
+
+        :param list[PyParameterDescription] theDescriptions: List of PyParameterDescriptions. 
+        :param str theUiName: The name that is shown on the UI
+        
+        .. pybind-default:: theUiName = ""
+
+    .. method:: __init__(self: object, theName: str, theDescriptions: list[PyParameterDescription], theUiName: str)      
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyString const&, PyVec<PyParameterDescription>&, PyString>()
+
+        Initializes a PyParameterDescriptionList with a list of PyParameterDescriptions.
+
+        :param str theName: Name of the list.
+        :param list[PyParameterDescription] theDescriptions: List of PyParameterDescriptions. 
+        :param str theUiName: UI name of the list.
+
+    .. method:: __init__(self: object, theProperties: PyPropertySet)        
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyPropertySet&>()
+            
+
+        Initializes a PyParameterDescriptionList with a set of PyProperties.
+        For each property in the set a PyParameterDescription will be created.
+
+        :param PyPropertySet theProperties: A set of PyProperties used to initialize the PyParameterDescriptions in the list.
+
+    .. method:: Name(self: object) -> str
+
+        Returns the (user visible) name of the PyParameterDescriptionList.
+
+        :return: The name of the list
+        :rtype: str
+
+    .. method:: SetName(self: object, theName: str)
+
+        Sets the name of the PyParameterDescriptionList.
+
+        :param str theName: Name that is used for the list.
+
+    .. method:: Descriptions(self: object) -> list[str]
+
+        Returns the PyParameterDescriptions in the PyParameterDescriptionList as a list.
+
+        :return: List of ParameterDescriptions in the list.
+        :rtype: list[str]
+
+    .. method:: NameDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the name(s) of all parameters in the list to the actual parameters.
+
+        :return: Dictionary mapping name(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: UUIDDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the UUID(s) of all parameters in the list to the actual parameters.
+
+        :return: Dictionary mapping UUID(s) of parameters to actual parameters.
+        :rtype: dict
+
+
+    .. method:: __repr__(self: object) -> str
+
+        .. pybind-method:: repr
+
+        Returns the debug information for the PyParameterDescriptionList object.
+
+        :return: Debug information of the object
+        :rtype: str
+
+
+.. class:: PyParameterGroup
+
+    A PyParameterGroup contains a list of parameters that are used together under a common name, e.g. the "Red", "Green" and "Blue" components of a color.
+    To change the parameters in a PyParameterGroup,  use a PyParameterGroupDialog or the PyCreateParameterDialog function with a PyParameterGroup as argument.
+
+    .. method:: __init__(self: object)
+        
+        .. pybind-method:: pybind11::init<>()
+
+        Initializes an empty PyParameterGroup.
+
+    .. method:: __init__(self: object, theName: str, theDescriptions: list[PyParameterDescription], theUiName: str = "")
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyString, PyVec<PyParameterDescription>&, PyString>()
+        
+        Initializes a PyParameterGroup with a list of PyParameterDescriptions and a PyString as name.
+
+        :param str theName: Name of the group that will be used in the UI.
+
+        :param list[PyParameterDescription] theDescriptions: List of PyParameterDescriptions. 
+
+        :param str theUiName: Name that will be used in the UI
+
+        .. pybind-default:: theUiName = ""
+
+    .. method:: __init__(self: object, theName: str, theDescriptions: PyParameterDescriptionList)
+        :noindex:
+        
+        .. pybind-method:: pybind11::init<PyString, PyParameterDescriptionList&>()
+
+        Initializes a PyParameterGroup with a PyParameterDesriptionList and a PyString as name.
+
+        :param str theName: Name of the group that will be used in the UI.
+
+        :param PyParameterDescriptionList theDescriptions: A PyParameterDescriptionList defining the parameters in the group.
+
+    .. method:: __init__(self: object, theName: str, theProperties: PyPropertySet)
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyString, PyPropertySet&>()
+
+        Initializes a PyParameterGroup with a set of PyProperties and a PyString as name.
+        For each property in the set a PyParameterDescription will be created.
+
+        :param str theName: Name of the group that will be used in the UI.
+
+        :param PyPropertySet theProperties: A set of PyProperties used to initialize the PyParameterDescriptions in the group.
+
+    .. method:: Name(self: object) -> str
+
+        Returns the (user visible) name of the PyParameterGroup.
+
+        :return: The name of the group 
+        :rtype: str
+
+    .. method:: Descriptions(self: object)
+
+        Returns the PyParameterDescriptions in the PyParameterGroup as a list.
+
+        :return: List of ParameterDescriptions in the group.
+        :rtype: list[PyParameterDescription]
+
+    .. method:: NameDictionary(self: object)
+
+        Returns a dictionary mapping the name(s) of all parameters in the group to the actual parameters.
+
+        :return: Dictionary mapping name(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: UUIDDictionary(self: object)
+
+        Returns a dictionary mapping the UUID(s) of all parameters in the group to the actual parameters.
+
+        :return: Dictionary mapping UUID(s) of parameters to actual parameters.
+        :rtype: dict
+
+
+    .. method:: __repr__(self: object) -> str
+
+        .. pybind-method:: repr
+
+        Returns the debug information for the PyParameterGroup object.
+
+        :return: Debug information of the object
+        :rtype: str
+
+.. class:: PyParameterGroupList
+
+    A PyParameterGroupList contains an ordered list of PyParameterGroups.
+    It should be used as a container for PyParameterGroups that will be displayed in one UI element.
+    To create an UI for a PyParameterGroupList,  use a PyParameterGroupListDialog or the PyCreateParameterDialog function with a PyParameterGroup as argument.
+
+
+    .. method:: __init__(self: object)
+
+        .. pybind-method:: pybind11::init<>()
+
+        Initializes an empty PyParameterGroupList.
+
+    .. method:: __init__(self: object, theGroups: list[PyParameterGroup])
+        :noindex:
+
+        .. pybind-method:: pybind11::init<PyVec<PyParameterGroup>&>()
+
+        Initializes a PyParameterGroupList with a list of PyParameterGroups.
+
+        :param list[PyParameterGroup] theGroups: List of PyParameterGroups. 
+
+    .. method:: Descriptions(self: object) -> list[str]
+
+        Returns the PyParameterDescriptions in the PyParameterGroupList as a list.
+
+        :return: List of ParameterDescriptions in the groups.
+        :rtype: list[PyParameterDescription]
+
+    .. method:: NameDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the name(s) of all parameters in the groups to the actual parameters.
+
+        :return: Dictionary mapping name(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: UUIDDictionary(self: object) -> dict
+
+        Returns a dictionary mapping the UUID(s) of all parameters in the groups to the actual parameters.
+
+        :return: Dictionary mapping UUID(s) of parameters to actual parameters.
+        :rtype: dict
+
+
+.. class:: PyParameterTree
+
+    TBD.
+
+
+.. class:: PyParameterDialog
+
+    .. pybind-inheritance:: PyParameterDialog<PyParameterDescription>, PyObject_
+
+    TBD.
+
+    .. method:: Show(self) -> PyDialogResult
+
+    .. method:: NameDictionary(self) -> dict[str, PyParameterDescription]
+
+        Returns a dictionary mapping the name(s) of all parameters in the groups to the actual parameters.
+
+        :return: Dictionary mapping name(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: UUIDDictionary(self) -> dict[str, PyParameterDescription]
+
+        Returns a dictionary mapping the UUID(s) of all parameters in the groups to the actual parameters.
+
+        :return: Dictionary mapping UUID(s) of parameters to actual parameters.
+        :rtype: dict
+
+    .. method:: Title(self) -> str
+
+    .. method:: SetTitle(self, title: str)
+
+    .. method:: ParameterType(self) -> str
+
+
+.. class:: PyParameterListDialog
+
+    .. pybind-inheritance:: PyParameterDialog<PyParameterDescriptionList>, PyObject_
+
+    TBD.
+
+    .. method:: Show(self) -> PyDialogResult
+
+
+.. class:: PyParameterGroupDialog
+
+    .. pybind-inheritance:: PyParameterDialog<PyParameterGroup>, PyObject_
+
+    TBD.
+
+    .. method:: Show(self) -> PyDialogResult
+
+
+.. class:: PyParameterGroupListDialog
+
+    .. pybind-inheritance:: PyParameterDialog<PyParameterGroupList>, PyObject_
+
+    TBD.
+
+    .. method:: Show(self) -> PyDialogResult
+
+
+.. class:: PyParameterTreeDialog
+
+    .. pybind-inheritance:: PyParameterDialog<PyParameterTree>, PyObject_
+
+    TBD.
+
+    .. method:: Show(self: object) -> PyDialogResult
+
+
+.. function:: PyCreateParameterDialog(title: str, description: PyParameterDescription) -> PyParameterDialog
+
+    .. pybind-method:: pybind11::overload_cast<const PyString&, PyParameterDescription&>(&PyCreateDialog)
+
+    Creates a parameter dialog for the given parameter.
+
+    :param str title: Title of the dialog
+    :param PyParameterDescription description: Description of the parameter:
+    :return: Returns the parameter dialog
+    :rtype: PyParameterDialog
+
+
+.. function:: PyCreateParameterDialog(title: str, description: PyParameterDescriptionList) -> PyObject
+    :noindex:
+
+    .. pybind-method:: pybind11::overload_cast<const PyString&, PyParameterDescriptionList&>(&PyCreateDialog)
+
+    TBD.
+
+
+.. function:: PyCreateParameterDialog(title: str, description: PyParameterGroup) -> PyObject
+    :noindex:
+
+    .. pybind-method:: pybind11::overload_cast<const PyString&, PyParameterGroup&>(&PyCreateDialog)
+
+    TBD.
+
+
+.. function:: PyCreateParameterDialog(title: str, description: PyParameterGroupList) -> PyObject
+    :noindex:
+
+    .. pybind-method:: pybind11::overload_cast<const PyString&, PyParameterGroupList&>(&PyCreateDialog)
+
+    TBD.
+
+
+.. function:: PyCreateParameterDialog(title: str, description: PyParameterTree) -> PyObject
+    :noindex:
+
+    .. pybind-method:: pybind11::overload_cast<const PyString&, PyParameterTree&>(&PyCreateDialog)
+
+    TBD.

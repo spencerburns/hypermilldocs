@@ -1,0 +1,14 @@
+Copyright
+=========
+
+| OPEN MIND \ *hyper*\ MILL Python API (hmPython)
+| 0.2.0.51031 - 2023-07-13
+|
+| (C) Copyright 2020-2022
+|
+| OPEN MIND Technologies AG
+| Argelsrieder Feld 5
+| 82234 Wessling
+| Germany
+|
+| `www.openmind-tech.com <https://www.openmind-tech.com>`_

@@ -1,0 +1,951 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Examples &#8212; hmPython  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Working with Visual Studio Code" href="vscode.html" />
+    <link rel="prev" title="Module om.cam.ui" href="uidoc.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vscode.html" title="Working with Visual Studio Code"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="uidoc.html" title="Module om.cam.ui"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<section id="examples-for-om-cam-core">
+<h2>Examples for <code class="docutils literal notranslate"><span class="pre">om.cam.core</span></code><a class="headerlink" href="#examples-for-om-cam-core" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Basic example how to include om.cam.core</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PyAlertSeverity</span><span class="p">,</span>
+    <span class="n">PyAlertButton</span>
+<span class="p">)</span>
+
+<span class="c1"># Our main routine with guard</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+
+        <span class="c1"># hyperMILL is not running :-(</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This application must be started from OPEN MIND hyperMILL&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># App is a singleton instance of the application. Instantiate it first by calling</span>
+        <span class="c1"># CreatePyApplication first.</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Reads the tool of each job and counts the tool changes</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Counts all tool changes in the joblist set</span>
+
+<span class="kn">import</span> <span class="nn">om.cam.core</span> <span class="k">as</span> <span class="nn">core</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">app</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+    
+    <span class="c1"># Some lambdas for convenience</span>
+    <span class="n">write</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">msg</span> <span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">show</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">msg</span> <span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+    
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+    <span class="n">jlset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">joblist</span> <span class="ow">in</span> <span class="n">jlset</span><span class="o">.</span><span class="n">Joblists</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cntToolChanges</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lastToolID</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">joblist</span><span class="o">.</span><span class="n">Jobs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>            
+            <span class="n">tool</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetTool</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">tool</span><span class="p">:</span>                
+                <span class="n">toolName</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+                <span class="n">toolID</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;ToolID&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">lastToolID</span> <span class="o">!=</span> <span class="n">toolID</span><span class="p">:</span>    
+                    <span class="n">cntToolChanges</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">write</span><span class="p">(</span><span class="s2">&quot;Tool change at job &#39;</span><span class="si">{}</span><span class="s2">&#39; to </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">toolName</span><span class="p">,</span> <span class="n">toolID</span><span class="p">))</span>
+                    <span class="n">lastToolID</span> <span class="o">=</span> <span class="n">toolID</span>
+        
+        <span class="n">show</span><span class="p">(</span><span class="s2">&quot;Joblist &#39;</span><span class="si">{}</span><span class="s2">&#39; has </span><span class="si">{}</span><span class="s2"> tool changes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">joblist</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">cntToolChanges</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Counts the tool changes before and after an optimization</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Counts all tool changes in the joblist set</span>
+
+<span class="kn">import</span> <span class="nn">om.cam.core</span> <span class="k">as</span> <span class="nn">core</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">countToolChanges</span><span class="p">(</span><span class="n">joblist</span><span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">PyJoblist</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">cntToolChanges</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">lastToolID</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">joblist</span><span class="o">.</span><span class="n">Jobs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>            
+        <span class="n">tool</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetTool</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tool</span><span class="p">:</span>                
+            <span class="n">toolID</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;ToolID&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">lastToolID</span> <span class="o">!=</span> <span class="n">toolID</span><span class="p">:</span>    
+                <span class="n">cntToolChanges</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">lastToolID</span> <span class="o">=</span> <span class="n">toolID</span>
+                
+    <span class="k">return</span> <span class="n">cntToolChanges</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">app</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+    
+    <span class="c1"># Some lambdas for convenience</span>
+    <span class="n">write</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">msg</span> <span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">show</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">msg</span> <span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+    
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+
+    <span class="n">jlset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">joblist</span> <span class="ow">in</span> <span class="n">jlset</span><span class="o">.</span><span class="n">Joblists</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="n">countToolChanges</span><span class="p">(</span><span class="n">joblist</span><span class="p">)</span>
+        
+        <span class="n">joblist</span><span class="o">.</span><span class="n">OptimizeWithSorting</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyJoblistOptimization</span><span class="o">.</span><span class="n">OptimizeWithGrouping</span><span class="p">,</span> 
+                                    <span class="n">core</span><span class="o">.</span><span class="n">PyJoblistOptWithToolSorting</span><span class="o">.</span><span class="n">AscendingToolDiam</span><span class="p">,</span>
+                                    <span class="n">core</span><span class="o">.</span><span class="n">PyJoblistOptWithCompoundJobs</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        
+        <span class="n">after</span> <span class="o">=</span> <span class="n">countToolChanges</span><span class="p">(</span><span class="n">joblist</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">after</span> <span class="o">&lt;</span> <span class="n">before</span><span class="p">:</span>
+            <span class="n">show</span><span class="p">(</span><span class="s2">&quot;Number of tool changes has improved.</span><span class="se">\n\n</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2">&#39; has now </span><span class="si">{}</span><span class="s2"> tool changes.</span><span class="se">\n</span><span class="si">{}</span><span class="s2"> changes were saved.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">joblist</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">after</span><span class="p">,</span> <span class="n">before</span><span class="o">-</span><span class="n">after</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">after</span> <span class="o">==</span> <span class="n">before</span><span class="p">:</span>
+            <span class="n">show</span><span class="p">(</span><span class="s2">&quot;Optimization had no effect on tool changes.</span><span class="se">\n\n</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2">&#39; has still </span><span class="si">{}</span><span class="s2"> tool changes.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">joblist</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">after</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">show</span><span class="p">(</span><span class="s2">&quot;Thing went worse. Number of tool changes increased from </span><span class="si">{}</span><span class="s2"> to </span><span class="si">{}</span><span class="s2"> tool changes.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">joblist</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">A more sophisticated example with UI creating jobs, translating and moving around</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect all jobs of same type into a compound job.</span>
+
+<span class="kn">import</span> <span class="nn">om.cam.core</span> <span class="k">as</span> <span class="nn">core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span> <span class="k">as</span> <span class="nn">ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+    <span class="n">app</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+    <span class="n">jlset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+    
+    <span class="c1"># Let&#39;s show a parameter dialog</span>
+    <span class="n">cycleDesc</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">PyParameterDescription</span><span class="p">(</span><span class="n">ui</span><span class="o">.</span><span class="n">PyParameterType</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="s2">&quot;Cycle Description&quot;</span><span class="p">)</span>
+    <span class="n">cycleDesc</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="s2">&quot;Ccc&quot;</span><span class="p">)</span>
+    
+    <span class="n">dlg</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Please enter a cycle description&quot;</span><span class="p">,</span> <span class="n">cycleDesc</span><span class="p">)</span>
+    <span class="n">dlgResult</span> <span class="o">=</span> <span class="n">dlg</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dlgResult</span> <span class="o">!=</span> <span class="n">ui</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">cycleDescValue</span> <span class="o">=</span>  <span class="n">dlg</span><span class="o">.</span><span class="n">NameDictionary</span><span class="p">()[</span><span class="s2">&quot;Cycle Description&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span><span class="p">()</span>
+    
+    <span class="c1"># Iteration Method 1: The API way with Objects class    </span>
+    <span class="n">joblists</span> <span class="o">=</span> <span class="n">jlset</span><span class="o">.</span><span class="n">GetJoblists</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">joblists</span><span class="o">.</span><span class="n">GetCount</span><span class="p">()):</span>
+        <span class="n">joblist</span> <span class="o">=</span> <span class="n">joblists</span><span class="o">.</span><span class="n">GetJoblist</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        
+        <span class="c1"># Let&#39;s create a new compound job in the joblist.</span>
+        <span class="n">compoundJob</span> <span class="o">=</span> <span class="n">joblist</span><span class="o">.</span><span class="n">CreateCompoundJob</span><span class="p">()</span>     
+        <span class="n">compoundJobUUID</span> <span class="o">=</span> <span class="n">compoundJob</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        <span class="n">compoundJobName</span> <span class="o">=</span> <span class="kc">None</span>
+                
+        <span class="c1"># Iteration Method 2: The new way with Collections</span>
+        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">joblist</span><span class="o">.</span><span class="n">Jobs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">jobType</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;JobType&quot;</span><span class="p">)</span>
+            <span class="c1"># Let&#39;s move all jobs with that job type to the compound job</span>
+            <span class="k">if</span> <span class="n">jobType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">cycleDescValue</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">compoundJobName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">compoundJobName</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">Translate</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">GetCycleDescProperty</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">))</span>
+                <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;Moving </span><span class="si">{}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">GetName</span><span class="p">()))</span>
+                <span class="n">jlset</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">(),</span> <span class="n">compoundJobUUID</span><span class="p">)</span>
+                
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">compoundJob</span><span class="o">.</span><span class="n">Jobs</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Remove the compoundjob</span>
+            <span class="n">jlset</span><span class="o">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">compoundJobUUID</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Rename the compound job</span>
+            <span class="n">jlset</span><span class="o">.</span><span class="n">Rename</span><span class="p">(</span><span class="n">compoundJobUUID</span><span class="p">,</span> <span class="n">compoundJobName</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Some enum operations</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="p">(</span><span class="n">PyGenerateHMReportOptions</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Dump all values</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        
+    <span class="c1"># Set a bit with OR</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ContinueOnOutdatedJobs|ContinueOnInvalidJobs = </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnOutdatedJobs</span> <span class="o">|</span> <span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnInvalidJobs</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;int(ContinueOnOutdatedJobs|ContinueOnInvalidJobs) = </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnOutdatedJobs</span> <span class="o">|</span> <span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnInvalidJobs</span><span class="p">)))</span>
+    
+    <span class="c1"># Reset a bit with AND NOT</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OutdatedJobStrategyMask &amp; ~ContinueOnOutdatedJobs = </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">OutdatedJobStrategyMask</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnOutdatedJobs</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;int(OutdatedJobStrategyMask &amp; ~ContinueOnOutdatedJobs) = </span><span class="si">{}</span><span class="s2">&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">OutdatedJobStrategyMask</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">PyGenerateHMReportOptions</span><span class="o">.</span><span class="n">ContinueOnOutdatedJobs</span><span class="p">)))</span>
+
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Basic example how to iterate through a collection like PyJoblistCollection of PyJobCollection</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This example iterates through all jobs in the job list set</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="p">(</span>
+  <span class="n">CreatePyApplication</span><span class="p">,</span>
+  <span class="n">IsHyperMillRunning</span><span class="p">,</span>
+  <span class="n">PyAlertSeverity</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">IsHyperMillRunning</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+  <span class="n">app</span> <span class="o">=</span> <span class="n">CreatePyApplication</span><span class="p">()</span>       
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+  <span class="n">jlset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+    
+  <span class="c1"># Iterate through joblists: Use PyJoblistCollection.Items() </span>
+  <span class="k">for</span> <span class="n">joblist</span> <span class="ow">in</span> <span class="n">jlset</span><span class="o">.</span><span class="n">Joblists</span><span class="p">()</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span> 
+    <span class="c1"># Iterate through joblists: Use PyJobCollection.Items()     </span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">joblist</span><span class="o">.</span><span class="n">Jobs</span><span class="p">()</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span> 
+      <span class="nb">id</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;*JOBID&quot;</span><span class="p">)</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+      <span class="n">jobType</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;JobType&quot;</span><span class="p">)</span>
+      <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> 
+                       <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> / </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">jobType</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Example to start hyperMILL and run a script from command-line</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open hyperMILL, does a short statistics, writes the result to C:\hm_vscode\results.txt and closes hyperMILL again</span>
+<span class="c1"># python C:\hm_vscode\list_cycle_stat.py --open C:\hm_vscode\testfile_cycle_types_large.hmc</span>
+
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">import</span> <span class="nn">om.cam.core</span> <span class="k">as</span> <span class="nn">core</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">def</span> <span class="nf">getArguments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">any</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;This is a short test script&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-x&quot;</span><span class="p">,</span> <span class="s2">&quot;--exe&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">OPEN MIND</span><span class="se">\\</span><span class="s2">hyperCAD-S</span><span class="se">\\</span><span class="s2">99.0.0</span><span class="se">\\</span><span class="s2">hmc.exe&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;hyperMILL executable&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--file&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;HMC file to open&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>       
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>        
+        <span class="n">args</span> <span class="o">=</span> <span class="n">getArguments</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input file does not exist.&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># The trick is: __file__ holds the name of the current file, so we can use to start the application.</span>
+        <span class="c1"># No argument parameters for the script are accepted right now in hyperMILL :-(</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">Start</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">exe</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">)</span>
+        
+        <span class="c1"># Check every seconds if the application still exists.</span>
+        <span class="k">while</span> <span class="n">psutil</span><span class="o">.</span><span class="n">pid_exists</span><span class="p">(</span><span class="n">pid</span><span class="p">):</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                                
+                    
+        <span class="c1"># This is NOT PyApplication</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">MessageBox</span><span class="p">(</span><span class="s2">&quot;All is done.&quot;</span><span class="p">,</span> <span class="s2">&quot;Info&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">MessageBoxOptions</span><span class="o">.</span><span class="n">ButtonOk</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+        <span class="n">doc</span> <span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">PyDocument</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span> <span class="c1"># VSCode Bug? Type is not recognized in intellisense</span>
+        <span class="n">jlset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+        <span class="n">stat</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">joblist</span> <span class="ow">in</span> <span class="n">jlset</span><span class="o">.</span><span class="n">Joblists</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">joblist</span><span class="o">.</span><span class="n">Jobs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">type</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;JobType&quot;</span><span class="p">)</span>
+                <span class="n">stat</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">stat</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="nb">type</span> <span class="ow">in</span> <span class="n">stat</span> <span class="k">else</span> <span class="mi">1</span>
+        
+        <span class="n">resultStr</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">resultStr</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">resultStr</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">Terminate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Example that demonstrates how to display and write messages</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This demonstrates who to write to hyperMILL output and how to show dialogs.</span>
+
+<span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IsHyperMillRunning</span><span class="p">,</span> 
+    <span class="n">CreatePyApplication</span><span class="p">,</span> 
+    <span class="n">PyAlertSeverity</span><span class="p">,</span> 
+    <span class="n">PyAlertButton</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">CreatePyApplication</span><span class="p">()</span>
+        
+        <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;Hello world, this is hyperMILL Python!&quot;</span><span class="p">)</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Question</span><span class="p">,</span> <span class="s2">&quot;Hello! Do you like hyperMILL Python?&quot;</span><span class="p">,</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">YESNoCancel</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;Answer=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">answer</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">No</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Warning</span><span class="p">,</span> <span class="s2">&quot;You are leaving me very sad... :-(&quot;</span><span class="p">,</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">answer</span> <span class="o">==</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;This makes me very happy :-)&quot;</span><span class="p">,</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Example for using property sets and properties</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="n">IsHyperMillRunning</span><span class="p">,</span> <span class="n">CreatePyApplication</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Bundle all that boilerplate stuff in one method</span>
+<span class="k">def</span> <span class="nf">getInstances</span><span class="p">():</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">CreatePyApplication</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="k">if</span> <span class="n">IsHyperMillRunning</span><span class="p">():</span>
+
+        <span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="n">doc</span><span class="p">)</span> <span class="o">=</span> <span class="n">getInstances</span><span class="p">()</span>
+
+        <span class="c1"># Redirect stdout to the hyperMILL console</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetStdOut</span><span class="p">()</span>
+
+        <span class="c1"># Get the property set of the active document </span>
+        <span class="n">propset</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetPropertySet</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">propset</span><span class="p">)</span> <span class="c1"># calls PyPropertySet.__str__ and prints it</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">propset</span><span class="o">.</span><span class="n">ToDict</span><span class="p">())</span> <span class="c1"># Creates a dictionary and then prints it</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">propset</span><span class="p">)):</span> <span class="c1"># calls PyPropertySet.__len__()</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">propset</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="c1"># calls PyPropertySet.__str__()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prop</span><span class="o">.</span><span class="n">GetValue</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#</span><span class="si">{:03}</span><span class="s2">: &#39;</span><span class="si">{}</span><span class="s2">&#39; = None (or not printable)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">prop</span><span class="o">.</span><span class="n">GetKey</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#</span><span class="si">{:03}</span><span class="s2">: &#39;</span><span class="si">{}</span><span class="s2">&#39; = &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">prop</span><span class="o">.</span><span class="n">GetKey</span><span class="p">(),</span> <span class="n">prop</span><span class="o">.</span><span class="n">GetValue</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Example: Redirecting stdout and stderr in with hmPython</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="c1"># Check, if hyperMILL is running</span>
+    <span class="k">if</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>          
+        
+        <span class="c1"># We want so save the original streams.</span>
+        <span class="n">stdoutBackup</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="n">stderrBackup</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetStdOut</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetStdErr</span><span class="p">()</span>
+
+        <span class="c1"># Do something with the streams</span>
+        <span class="c1"># Magically, the information is written to the console.</span>
+        <span class="c1"># OPEN MIND Info:     Hello World!</span>
+        <span class="c1"># OPEN MIND Error:    The end is near! This is my last warning.</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;The end is near! This is my last warning.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdoutBackup</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderrBackup</span>
+        
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Example of using the PyResourceMgr class</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">from</span> <span class="nn">om.cam.core</span> <span class="kn">import</span> <span class="n">CreatePyApplication</span><span class="p">,</span> <span class="n">PyAlertSeverity</span><span class="p">,</span> <span class="n">PyAlertButton</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>       
+        <span class="n">app</span> <span class="o">=</span> <span class="n">CreatePyApplication</span><span class="p">()</span>
+        <span class="n">resmgr</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetResourceMgr</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">resmgr</span><span class="p">:</span>
+            <span class="c1"># hyperMILL Version</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">resmgr</span><span class="o">.</span><span class="n">GetVersion</span><span class="p">()</span>
+            <span class="c1"># Current language</span>
+            <span class="n">lang</span> <span class="o">=</span> <span class="n">resmgr</span><span class="o">.</span><span class="n">GetLanguage</span><span class="p">()</span>
+            <span class="c1"># Path to the global working space</span>
+            <span class="n">gws</span> <span class="o">=</span> <span class="n">resmgr</span><span class="o">.</span><span class="n">GetGlobalWorkingSpace</span><span class="p">()</span>
+            <span class="c1"># Path to the projects directory</span>
+            <span class="n">projDir</span> <span class="o">=</span> <span class="n">resmgr</span><span class="o">.</span><span class="n">GetProjectsDirectory</span><span class="p">()</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Version: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Language: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Global working space: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Projects directory: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">gws</span><span class="p">,</span> <span class="n">projDir</span><span class="p">)</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">ShowMessage</span><span class="p">(</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">PyAlertButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Detailled example of how to dump a job browser tree</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">om.cam.core</span> <span class="k">as</span> <span class="nn">co</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Just evaluate given arguments</span>
+<span class="k">def</span> <span class="nf">getArguments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">any</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dumps the whole hyperMILL job structure&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--all-trees&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Dumps all trees&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Disables output in hyperMILL output&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--with-cfg&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Dumps also all CFG-Properties (maybe very large)&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="c1"># Create a JSON node with unknown object type</span>
+
+<span class="k">def</span> <span class="nf">createJobNode</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonJob</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    
+    <span class="c1"># hasattr checks if the given methode name is known</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;GetPyType&quot;</span><span class="p">):</span>
+        <span class="n">jsonJob</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;GetName&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;GetUUID&quot;</span><span class="p">):</span>
+        <span class="n">jsonJob</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonJob</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;GetCfgParameters&quot;</span><span class="p">):</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+        <span class="c1"># Cfg is a dict, so we can insert it here directly</span>
+        <span class="n">jsonJob</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+        
+    <span class="c1"># one of the methods to get children is GetJobs (another one would be GetChildren)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;GetJobs&quot;</span><span class="p">):</span>
+        <span class="n">jobs</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetJobs</span><span class="p">()</span>
+        <span class="n">jsonJobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jobs</span><span class="o">.</span><span class="n">GetCount</span><span class="p">()):</span>
+            <span class="n">jobsObj</span> <span class="o">=</span> <span class="n">jobs</span><span class="o">.</span><span class="n">GetJob</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">createJobNode</span><span class="p">(</span><span class="n">jobsObj</span><span class="p">)</span>
+            <span class="n">jsonJobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsonJobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">jsonJob</span><span class="p">[</span><span class="s2">&quot;Children&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonJobs</span>
+    <span class="k">return</span> <span class="n">jsonJob</span>
+
+        
+<span class="k">def</span> <span class="nf">createJobTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonJobListSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    
+    <span class="n">jobListSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetJoblistSet</span><span class="p">()</span>
+
+    <span class="n">jsonJobLists</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">joblists</span> <span class="o">=</span> <span class="n">jobListSet</span><span class="o">.</span><span class="n">Joblists</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">joblistIt</span> <span class="ow">in</span> <span class="n">joblists</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">joblist</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyJoblist</span><span class="p">,</span> <span class="n">joblistIt</span><span class="p">)</span>
+        
+        <span class="n">jsonJoblist</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonJoblist</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">joblist</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonJoblist</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">joblist</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+
+        <span class="n">jsonChildren</span> <span class="o">=</span> <span class="nb">list</span><span class="p">();</span>
+        <span class="n">pyObjs</span> <span class="o">=</span> <span class="n">joblist</span><span class="o">.</span><span class="n">GetChildren</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pyObjs</span><span class="o">.</span><span class="n">GetCount</span><span class="p">()):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">pyObjs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">jsonJob</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;PyJob&quot;</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;PyCompoundJob&quot;</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;PySubJoblist&quot;</span><span class="p">:</span>
+                <span class="n">jsonJob</span> <span class="o">=</span> <span class="n">createJobNode</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">if</span> <span class="n">jsonJob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">jsonChildren</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonJob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsonChildren</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">jsonJoblist</span><span class="p">[</span><span class="s2">&quot;Children&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonChildren</span>
+            
+        <span class="n">jsonJobLists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonJoblist</span><span class="p">)</span>
+    <span class="n">jsonJobListSet</span><span class="p">[</span><span class="s2">&quot;JobLists&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonJobLists</span>    
+    <span class="k">return</span> <span class="n">jsonJobListSet</span>
+
+
+<span class="k">def</span> <span class="nf">createFeatureTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonFeatureListSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    
+    <span class="n">jobFeatureListSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetFeaturelistSet</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">jobFeatureListSet</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+        <span class="n">jsonFeatureListSet</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+    
+    <span class="n">jsonFeatureLists</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">featureLists</span> <span class="o">=</span> <span class="n">jobFeatureListSet</span><span class="o">.</span><span class="n">Featurelists</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">featurelist</span> <span class="ow">in</span> <span class="n">featureLists</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">jsonFeaturelist</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>      
+        <span class="n">jsonFeaturelist</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">featurelist</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>            
+        <span class="n">jsonFeaturelist</span><span class="p">[</span><span class="s2">&quot;Features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">featurelist</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+            <span class="n">jsonFeaturelist</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+            
+        <span class="n">features</span> <span class="o">=</span> <span class="n">featurelist</span><span class="o">.</span><span class="n">Features</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+            <span class="n">feature</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyFeature</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="n">jsonFeature</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">jsonFeature</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+            <span class="n">jsonFeature</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+            <span class="n">jsonFeature</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+                <span class="n">cfg</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+                <span class="n">jsonFeature</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+            <span class="n">jsonFeaturelist</span><span class="p">[</span><span class="s2">&quot;Features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonFeature</span><span class="p">)</span>
+        <span class="n">jsonFeatureLists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonFeaturelist</span><span class="p">)</span>
+    <span class="n">jsonFeatureListSet</span><span class="p">[</span><span class="s2">&quot;FeatureLists&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonFeatureLists</span>
+    <span class="k">return</span> <span class="n">jsonFeatureListSet</span>
+
+<span class="k">def</span> <span class="nf">createFrameTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonFrameSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>    
+    <span class="n">frameSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetFrameSet</span><span class="p">()</span>
+    
+    <span class="n">jsonFrames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>    
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">frameSet</span><span class="o">.</span><span class="n">Frames</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">frames</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyFrame</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        
+        <span class="n">jsonFrame</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonFrame</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        <span class="n">jsonFrame</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonFrame</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+            <span class="n">jsonFrame</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="n">jsonFrames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonFrame</span><span class="p">)</span>
+        
+    <span class="n">jsonFrameSet</span><span class="p">[</span><span class="s2">&quot;Frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonFrames</span>
+    
+    <span class="n">jsonOrigins</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">origins</span> <span class="o">=</span> <span class="n">frameSet</span><span class="o">.</span><span class="n">Origins</span><span class="p">()</span>    
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">origins</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyOrigin</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+                
+        <span class="n">jsonElem</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+            <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="n">jsonOrigins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonElem</span><span class="p">)</span>
+        
+    <span class="n">jsonFrameSet</span><span class="p">[</span><span class="s2">&quot;Origins&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonOrigins</span>
+    
+    <span class="k">return</span> <span class="n">jsonFrameSet</span>
+
+
+<span class="k">def</span> <span class="nf">createStockTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonStockSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">stockSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetStockSet</span><span class="p">()</span>
+    
+    <span class="n">jsonList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">stocks</span> <span class="o">=</span> <span class="n">stockSet</span><span class="o">.</span><span class="n">Stocks</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">stocks</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">stock</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyStock</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        
+        <span class="n">jsonElem</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        
+    
+<span class="k">def</span> <span class="nf">createTransformationTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonTransformationSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">transformationSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetTransformationSet</span><span class="p">()</span>    
+    
+    <span class="n">jsonList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>    
+    <span class="n">transformations</span> <span class="o">=</span> <span class="n">transformationSet</span><span class="o">.</span><span class="n">Transformations</span><span class="p">()</span>    
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">transformations</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">transformation</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyTransformation</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        
+        <span class="n">jsonElem</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+            <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="n">jsonList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonElem</span><span class="p">)</span>
+        
+    <span class="n">jsonTransformationSet</span><span class="p">[</span><span class="s2">&quot;Transformations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonList</span>
+
+    <span class="k">return</span> <span class="n">jsonTransformationSet</span>
+
+
+<span class="k">def</span> <span class="nf">createToolTree</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">co</span><span class="o">.</span><span class="n">PyDocument</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">jsonToolSet</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>   
+    <span class="n">toolSet</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">GetToolSet</span><span class="p">()</span>
+    
+    
+    <span class="n">jsonTools</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  
+    <span class="n">tools</span> <span class="o">=</span> <span class="n">toolSet</span><span class="o">.</span><span class="n">Tools</span><span class="p">()</span>    
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">tools</span><span class="o">.</span><span class="n">Items</span><span class="p">():</span>
+        <span class="n">tool</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyTool</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="n">jsonElem</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;PyType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetPyType</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+        <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;UUID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetUUID</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">with_cfg</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">GetCfgParameters</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyConfigIO</span><span class="o">.</span><span class="n">WriteEdit</span><span class="p">)</span>
+            <span class="n">jsonElem</span><span class="p">[</span><span class="s2">&quot;Cfg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="n">jsonTools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jsonElem</span><span class="p">)</span>
+        
+    <span class="n">jsonToolSet</span><span class="p">[</span><span class="s2">&quot;Tools&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsonTools</span>
+    
+    <span class="k">return</span> <span class="n">jsonTools</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">co</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+    <span class="n">args</span> <span class="o">=</span> <span class="n">getArguments</span><span class="p">()</span>
+            
+    <span class="n">app</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">CreatePyApplication</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">GetActiveDocument</span><span class="p">()</span>
+
+    <span class="n">jsonDoc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">jsonDoc</span><span class="p">[</span><span class="s2">&quot;JobListSet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">createJobTree</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">all_trees</span><span class="p">:</span>
+        <span class="n">jsonDoc</span><span class="p">[</span><span class="s2">&quot;FrameSet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">createFrameTree</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">jsonDoc</span><span class="p">[</span><span class="s2">&quot;TransformationSet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">createTransformationTree</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>    
+        <span class="n">jsonDoc</span><span class="p">[</span><span class="s2">&quot;ToolSet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">createToolTree</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">jsonDoc</span><span class="p">[</span><span class="s2">&quot;FeatureListSet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">createFeatureTree</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">jsonDoc</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>    
+        <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">tmp</span><span class="p">)</span>
+        
+    <span class="n">fname</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">new_name</span> <span class="o">=</span> <span class="n">fname</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">WriteMessage</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">PyAlertSeverity</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="s2">&quot;Writing to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_name</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_name</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examples-for-om-cam-ui">
+<h2>Examples for <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code><a class="headerlink" href="#examples-for-om-cam-ui" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Single Parameter</span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+
+    <span class="c1"># A single parameter of type &quot;String&quot; with the name &quot;File Name&quot; is defined</span>
+    <span class="n">fileNameParameter</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="s2">&quot;File Name&quot;</span><span class="p">)</span>
+    <span class="c1"># The current value for each parameter can be set using the &quot;SetValue&quot; function.</span>
+    <span class="n">fileNameParameter</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="s2">&quot;This could be your file name!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># A dialog is created to query for the single parameter.</span>
+    <span class="c1"># The title of the dialog will be &quot;Open File&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span> <span class="n">fileNameParameter</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dialogResult</span> <span class="o">==</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">):</span>
+        <span class="c1"># If the user accepted (pressed &quot;OK&quot;) and no error occured, the parameter description for the parameter given by the user</span>
+        <span class="c1"># can be queried using the name of the parameter:</span>
+        <span class="n">modifiedParameter</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">NameDictionary</span><span class="p">()[</span><span class="s2">&quot;File Name&quot;</span><span class="p">]</span>
+        <span class="c1"># Now you can access the actual value provided by the user:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">modifiedParameter</span><span class="o">.</span><span class="n">Value</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Parameter List</span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Creating a list of ParameterDescriptions for different types</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pdl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescriptionList</span>
+
+    <span class="n">listName</span> <span class="o">=</span> <span class="s2">&quot;Parameter Type List&quot;</span>
+    <span class="n">parameterList</span> <span class="o">=</span> <span class="n">pdl</span><span class="p">(</span><span class="n">listName</span><span class="p">,</span> <span class="p">[</span><span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Bool</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int8</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="mi">99</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int16</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Int64</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="mi">102</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt8</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="mi">103</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt16</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="mi">104</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt32</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="mi">105</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">UInt64</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="mi">106</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float32</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="mi">107</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="mi">108</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s1">&#39;Alle meine Entchen&#39;</span><span class="p">)])</span>
+
+    <span class="n">dialogTitle</span> <span class="o">=</span> <span class="s2">&quot;Test : Parameter Types&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="n">dialogTitle</span><span class="p">,</span> <span class="n">parameterList</span><span class="p">)</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Parameter Group</span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pg</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroup</span>
+
+    <span class="c1"># Defining three parameters, representing a 3-D coordinate</span>
+    <span class="n">pX</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">pY</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">pZ</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># The three coordinates are now combined into one group,</span>
+    <span class="c1"># the title of the group will be &quot;Origin&quot;.</span>
+    <span class="n">pOrigin</span> <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;Origin&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pX</span><span class="p">,</span> <span class="n">pY</span><span class="p">,</span> <span class="n">pZ</span><span class="p">])</span>
+    
+    <span class="c1"># A dialog is created to query the parameters in the group.</span>
+    <span class="c1"># The title of the dialog will be &quot;Set Origin&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Set Origin&quot;</span><span class="p">,</span> <span class="n">pOrigin</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Parameter Group List</span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">om.cam.core</span>
+<span class="kn">import</span> <span class="nn">om.cam.ui</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># This example shows how the user can create several parameter groups and combine them into a parameter group list.</span>
+    <span class="c1"># The group list is then used to create a dialog to query the values for the parameters.</span>
+    
+    <span class="c1"># To be able to display any dialog, Hypermill has to be running.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">IsHyperMillRunning</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="c1"># For convencience some shortcuts for namespaces: </span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">cam</span><span class="o">.</span><span class="n">ui</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterType</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescription</span>
+    <span class="n">pdl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterDescriptionList</span>
+    <span class="n">pg</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroup</span>
+    <span class="n">pgl</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyParameterGroupList</span>
+
+    <span class="c1"># In this example two 3D coordinates should be queried: a start point and an end point</span>
+    <span class="c1"># First defining the coordinates for start and end point</span>
+    <span class="n">pStartX</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">pStartY</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="n">pStartZ</span> <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="n">pEndX</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">pEndY</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="n">pEndZ</span>   <span class="o">=</span> <span class="n">pd</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">Float64</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Now creating groups for the start and and point</span>
+    <span class="n">pStart</span> <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pStartX</span><span class="p">,</span> <span class="n">pStartY</span><span class="p">,</span> <span class="n">pStartZ</span><span class="p">])</span>
+    <span class="n">pEnd</span>   <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s2">&quot;End&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">pEndX</span><span class="p">,</span> <span class="n">pEndY</span><span class="p">,</span> <span class="n">pEndZ</span><span class="p">])</span>
+
+    <span class="c1"># Now creating the group list to be used</span>
+    <span class="n">pGroupList</span> <span class="o">=</span> <span class="n">pgl</span><span class="p">([</span><span class="n">pStart</span><span class="p">,</span> <span class="n">pEnd</span><span class="p">])</span>
+
+    <span class="c1"># A dialog is created to query the parameters in both groups.</span>
+    <span class="c1"># The title of the dialog will be &quot;Set Translation&quot;</span>
+    <span class="n">dialog</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyCreateParameterDialog</span><span class="p">(</span><span class="s2">&quot;Set Translation&quot;</span><span class="p">,</span> <span class="n">pGroupList</span><span class="p">)</span>
+
+    <span class="c1"># The dialog is now shown as modal dialog, the script will not continue until the user either accepts or cancels the dialog.</span>
+    <span class="c1"># Show() will return PyDialogResult::Accepted, PyDialogResult::Rejected or PyDialogResult::Error.</span>
+    <span class="n">dialogResult</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">dialogResult</span> <span class="o">==</span> <span class="n">ns</span><span class="o">.</span><span class="n">PyDialogResult</span><span class="o">.</span><span class="n">Accepted</span><span class="p">):</span>
+        <span class="c1"># If the user accepted (pressed &quot;OK&quot;) and no error occured, the new values for origin can be queried.</span>
+        <span class="c1"># We can access each parameter description in a parameter group using the &quot;Descriptions&quot; function:</span>
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">pStart</span><span class="o">.</span><span class="n">Descriptions</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Value</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pEnd</span><span class="o">.</span><span class="n">Name</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">pEnd</span><span class="o">.</span><span class="n">Descriptions</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">Value</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#examples-for-om-cam-core">Examples for <code class="docutils literal notranslate"><span class="pre">om.cam.core</span></code></a></li>
+<li><a class="reference internal" href="#examples-for-om-cam-ui">Examples for <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="uidoc.html"
+                          title="previous chapter">Module <code class="docutils literal notranslate"><span class="pre">om.cam.ui</span></code></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="vscode.html"
+                          title="next chapter">Working with Visual Studio Code</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/examples.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vscode.html" title="Working with Visual Studio Code"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="uidoc.html" title="Module om.cam.ui"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">hmPython  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2020-2022, OPEN MIND Technologies AG.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

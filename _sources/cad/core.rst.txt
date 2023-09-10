@@ -1,0 +1,91 @@
+Core
+===========
+
+.. py:class:: PyApplication
+
+
+	.. py:classmethod:: NewDocument() -> Document
+
+		Create a new Document
+		
+		:return: The new document created
+		:rtype: Document
+
+	.. py:classmethod:: NewModel() -> Model
+
+		Create a new Model
+		
+		:return: The new model created
+		:rtype: Model
+
+
+.. py:class:: CadEntity(TaggedObj)
+
+
+	.. py:property:: Visible
+
+
+
+	.. py:property:: Layer
+
+
+
+	.. py:property:: Drawable
+
+
+
+	.. py:classmethod:: Clone() -> CadEntity
+
+		Clone the CadEntity
+
+		:return: A cloned CadEntity
+		:rtype: CadEntity
+
+	.. py:classmethod:: CloneTo(doc : Document) -> CadEntity
+
+		Clone the CadEntity into the given Document and the return the
+		CadEntity created.
+
+		:param doc: the Document to which the cloned CadEntity is added
+		:type doc: Document
+		:return: The cloned CadEntity
+		:rtype: CadEntity
+
+	.. py:classmethod:: Persist()
+
+
+	.. py:attribute:: Id
+
+		The Id of the CadEntity
+
+		:return: the of the of the CadEntity
+		:rtype: Int
+
+	.. py:attribute:: Deleted
+
+
+	.. py:attribute:: Locked
+
+
+	.. py:attribute:: Modified
+
+
+	.. py:attribute:: Persistent
+
+
+	.. py:attribute:: CanPersist
+
+
+	.. py:attribute:: Model
+
+
+	.. py:attribute:: Parent
+
+
+	.. py:attribute:: Geometry
+
+
+
+.. py:class:: AxialSurfaceAxis(ParAxis)
+
+

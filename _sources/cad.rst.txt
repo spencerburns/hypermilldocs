@@ -1,0 +1,7 @@
+.. toctree::
+	:maxdepth: 2
+	:caption: CAD related (aka hyperCAD-S) Python API
+
+	cad/geom.rst
+	cad/core.rst
+	cad/commands.rst
